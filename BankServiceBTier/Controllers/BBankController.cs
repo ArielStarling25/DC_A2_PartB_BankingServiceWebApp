@@ -13,7 +13,7 @@ namespace BankServiceBTier.Controllers
         private readonly string httpURL = "http://localhost:5027";
 
         // --- BANK CONTROLLER FUNCTIONALITY ---
-        // GET: api/Banks
+        // GET: api/bbank
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Bank>>> GetBanks()
         {
@@ -32,7 +32,7 @@ namespace BankServiceBTier.Controllers
             }
         }
 
-        // GET: api/Banks/5
+        // GET: api/bbank/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Bank>> GetBanks(uint id)
         {
@@ -50,7 +50,7 @@ namespace BankServiceBTier.Controllers
             }
         }
 
-        // PUT: api/Banks/5
+        // PUT: api/bbank/5
         [HttpPut("{id}")]
         public async Task<IActionResult> PutBank(uint id, [FromBody] Bank bankData)
         {
@@ -69,7 +69,7 @@ namespace BankServiceBTier.Controllers
             }
         }
 
-        // POST: api/Banks
+        // POST: api/bbank
         [HttpPost]
         public async Task<ActionResult<Bank>> PostBank([FromBody] Bank bankData)
         {
@@ -88,7 +88,7 @@ namespace BankServiceBTier.Controllers
             }
         }
 
-        // DELETE: api/Banks/5
+        // DELETE: api/bbank/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteBank(uint id)
         {

@@ -13,7 +13,7 @@ namespace BankServiceBTier.Controllers
         private readonly string httpURL = "http://localhost:5027";
 
         // --- TRANSACTION CONTROLLER FUNCTIONALITY ---
-        // GET: api/Transactions                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+        // GET: api/btransaction                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Transaction>>> GetTransactions()
         {
@@ -32,7 +32,7 @@ namespace BankServiceBTier.Controllers
             }
         }
 
-        // GET: api/Transactions/5
+        // GET: api/btransaction/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Transaction>> GetProfiles(uint id)
         {
@@ -50,7 +50,7 @@ namespace BankServiceBTier.Controllers
             }
         }
 
-        // PUT: api/Transactions/5
+        // PUT: api/btransaction/5
         [HttpPut("{id}")]
         public async Task<IActionResult> PutBank(uint id, [FromBody] Transaction transData)
         {
@@ -69,7 +69,7 @@ namespace BankServiceBTier.Controllers
             }
         }
 
-        // POST: api/Transactions
+        // POST: api/btransaction
         [HttpPost]
         public async Task<ActionResult<Transaction>> PostBank([FromBody] Transaction transData)
         {
@@ -88,7 +88,7 @@ namespace BankServiceBTier.Controllers
             }
         }
 
-        // DELETE: api/Transactions/5
+        // DELETE: api/btransaction/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteBank(uint id)
         {

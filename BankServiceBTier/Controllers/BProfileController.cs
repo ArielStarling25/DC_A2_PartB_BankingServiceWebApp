@@ -13,7 +13,7 @@ namespace BankServiceBTier.Controllers
         private readonly string httpURL = "http://localhost:5027";
 
         // --- PROFILE CONTROLLER FUNCTIONALITY ---
-        // GET: api/Profiles                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+        // GET: api/bprofile                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Profile>>> GetProfiles()
         {
@@ -32,7 +32,7 @@ namespace BankServiceBTier.Controllers
             }
         }
 
-        // GET: api/Profiles/5
+        // GET: api/bprofiles/5
         [HttpGet("{email}")]
         public async Task<ActionResult<Profile>> GetProfiles(string email)
         {
@@ -50,7 +50,7 @@ namespace BankServiceBTier.Controllers
             }
         }
 
-        // PUT: api/Profiles/5
+        // PUT: api/bprofile/5
         [HttpPut("{email}")]
         public async Task<IActionResult> PutBank(string email, [FromBody] Profile profileData)
         {
@@ -69,7 +69,7 @@ namespace BankServiceBTier.Controllers
             }
         }
 
-        // POST: api/Profiles
+        // POST: api/bprofile
         [HttpPost]
         public async Task<ActionResult<Profile>> PostBank([FromBody] Profile profileData)
         {
@@ -88,7 +88,7 @@ namespace BankServiceBTier.Controllers
             }
         }
 
-        // DELETE: api/Profiles/5
+        // DELETE: api/bprofile/5
         [HttpDelete("{email}")]
         public async Task<IActionResult> DeleteBank(string email)
         {
