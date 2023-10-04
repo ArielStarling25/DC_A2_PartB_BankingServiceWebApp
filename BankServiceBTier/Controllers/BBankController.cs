@@ -77,7 +77,7 @@ namespace BankServiceBTier.Controllers
             RestRequest req = new RestRequest("/api/banks", Method.Post);
             req.RequestFormat = RestSharp.DataFormat.Json;
             req.AddBody(bankData);
-            RestResponse response = await client.PutAsync(req);
+            RestResponse response = await client.PostAsync(req);
             if (response.IsSuccessStatusCode)
             {
                 return CreatedAtAction("PostBank", response.Content);
@@ -94,7 +94,7 @@ namespace BankServiceBTier.Controllers
         {
             RestClient client = new RestClient(httpURL);
             RestRequest req = new RestRequest("/api/banks/" + id, Method.Delete);
-            RestResponse response = await client.GetAsync(req);
+            RestResponse response = await client.DeleteAsync(req);
             if (response.IsSuccessStatusCode)
             {
                 return NoContent();
