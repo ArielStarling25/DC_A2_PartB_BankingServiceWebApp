@@ -71,7 +71,7 @@ namespace BankServiceBTier.Controllers
 
         // POST: api/Profiles
         [HttpPost]
-        public async Task<ActionResult<Bank>> PostBank([FromBody] Profile profileData)
+        public async Task<ActionResult<Profile>> PostBank([FromBody] Profile profileData)
         {
             RestClient client = new RestClient(httpURL);
             RestRequest req = new RestRequest("/api/profiles", Method.Post);
@@ -93,7 +93,7 @@ namespace BankServiceBTier.Controllers
         public async Task<IActionResult> DeleteBank(string email)
         {
             RestClient client = new RestClient(httpURL);
-            RestRequest req = new RestRequest("/api/banks/" + email, Method.Delete);
+            RestRequest req = new RestRequest("/api/profiles/" + email, Method.Delete);
             RestResponse response = await client.GetAsync(req);
             if (response.IsSuccessStatusCode)
             {
