@@ -4,11 +4,11 @@ using System.Diagnostics;
 
 namespace BankServiceBTier.Controllers
 {
-    public class HomeController : Controller
+    public class BusinessHomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly ILogger<BusinessHomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        public BusinessHomeController(ILogger<BusinessHomeController> logger)
         {
             _logger = logger;
         }
