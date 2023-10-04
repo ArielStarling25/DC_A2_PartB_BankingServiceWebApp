@@ -1,8 +1,22 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Log In Page";
+    string message = ViewBag.message;
+    string error = ViewBag.Error;
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+@if(message != null && message.Equals("Logged in")){
+    <p id="status">User Successfully Logged In!</p>
+}
+else{
+    <div id="LoginForm">
+        @if(error != null && error.Length > 0)
+        {
+            <p>@error</p>
+        }
+        <form action="/Home/" method="post">
+            <input id="Uname" type="text" name="username" placeholder="Username"/>
+            <input id="Upass" type="password" name="password" placeholder="Password"/>
+            <input type="submit" value="Submit">
+        </form>
+    </div>
+}
