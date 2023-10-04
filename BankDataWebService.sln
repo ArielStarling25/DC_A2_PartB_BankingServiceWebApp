@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.6.33829.357
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankDataWebService", "BankDataWebService\BankDataWebService.csproj", "{D7C82099-D38E-4399-84F9-02506F24635D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D7C82099-D38E-4399-84F9-02506F24635D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D7C82099-D38E-4399-84F9-02506F24635D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D7C82099-D38E-4399-84F9-02506F24635D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D7C82099-D38E-4399-84F9-02506F24635D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3A960AE5-B6D2-4815-AF12-EFF80BD34BA3}
+	EndGlobalSection
+EndGlobal
