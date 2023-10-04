@@ -5,7 +5,7 @@
         int index = 1;
         private Random random = new Random();
         private string[] names = { "Thomas", "Landy", "Jason", "Alex", "Aaron", "Adams", "Baker", "Clark", "Davis", "Evans", "Frank", "Ghosh", "Hills", "Irwin", "Jones", "Klein", "Lopez", "Mason", "Nalty", "Ochoa", "Patel", "Quinn", "Reily", "Smith", "Trott", "Usman", "Valdo", "White", "Xiang", "Yakub", "Zafar" };
-        private string[] fileName = { "Prof1.jpg", "Prof2.jpg", "Prof3.jpg", "Prof4.png", "Prof5.png", "Prof6.png"};
+        private string[] fileName = { "p1.jpg", "p2.jpg", "p3.jpg", "p4.jpg", "p5.jpg", "p6.jpg", "p7.jpg", "p8.jpg", "p9.jpg", "p10.jpg"};
         private string[] jalan = { "Jalan Annato", "Jalan Angsana", "Jalan Ansellia", "Jalan Asmara", "Jalan Bendahara", "Jalan Bintang", "Jalan Bintang Jaya 1", "Jalan Bintang Jaya 2", "Jalan Bintang Jaya 3", "Jalan Bintang Jaya 4", "Jalan Bintang Jaya 5, Jalan Pakis", "Jalan Permaisuri", "Jalan Merbau" };
 
         private string GetName()
