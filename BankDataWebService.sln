@@ -5,7 +5,9 @@ VisualStudioVersion = 17.6.33829.357
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BankDataWebService", "BankDataWebService\BankDataWebService.csproj", "{D7C82099-D38E-4399-84F9-02506F24635D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankServiceBTier", "BankServiceBTier\BankServiceBTier.csproj", "{2441D9FF-1007-44E9-BBE2-0CD3B3121E6E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BankServiceBTier", "BankServiceBTier\BankServiceBTier.csproj", "{2441D9FF-1007-44E9-BBE2-0CD3B3121E6E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankServiceGUI", "BankServiceGUI\BankServiceGUI.csproj", "{578E2AEB-2495-46E7-B5E2-94B0D1D8ACA6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{2441D9FF-1007-44E9-BBE2-0CD3B3121E6E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2441D9FF-1007-44E9-BBE2-0CD3B3121E6E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2441D9FF-1007-44E9-BBE2-0CD3B3121E6E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{578E2AEB-2495-46E7-B5E2-94B0D1D8ACA6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{578E2AEB-2495-46E7-B5E2-94B0D1D8ACA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{578E2AEB-2495-46E7-B5E2-94B0D1D8ACA6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{578E2AEB-2495-46E7-B5E2-94B0D1D8ACA6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
