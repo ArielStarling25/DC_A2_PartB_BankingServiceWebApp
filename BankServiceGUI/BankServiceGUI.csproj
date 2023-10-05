@@ -11,4 +11,9 @@
     <PackageReference Include="RestSharp" Version="110.2.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\BankDataWebService\BankDataWebService.csproj" />
+    <ProjectReference Include="..\BankServiceBTier\BankServiceBTier.csproj" />
+  </ItemGroup>
+
 </Project>

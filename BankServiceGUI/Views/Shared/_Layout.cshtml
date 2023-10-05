@@ -4,23 +4,44 @@
 
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <title>@ViewBag.Title</title>
-    <link rel="stylesheet" href="~/css/site.css">
+    <head>
+        <title>@ViewBag.Title</title>
+        <link rel="stylesheet" href="~/css/site.css">
 
-</head>
-<body>
-    <div id="header">
-
-    </div>
-    <div id="naviBar">
-
-    </div>
-    <div id="mainBody">
-        @RenderBody()
-    </div>
-    <div id="footer">
-
-    </div>
-</body>
+    </head>
+    <body>
+        <div id="header">
+            <h2 id="headerTitle"> Bank Data Web Service Web Application </h2>
+        </div>
+        <div id="naviBar">
+            @if(message != null && message.Equals("LoggedIn"))
+            {
+                <ul>
+                    <li>
+                        <a href="/Home/Index?sessionId=12345">Login</a>
+                    </li>
+                    <li>
+                        <a href="/Home/Profile?sessionId=12345">Profile</a>
+                    </li>
+                </ul>
+            }
+            else
+            {
+                <ul>
+                    <li>
+                        <a href="/Home/Index">Login</a>
+                    </li>
+                    <li>
+                        <a href="/Home/Profile">Profile</a>
+                    </li>
+                </ul>
+            }
+        </div>
+        <div id="mainBody">
+            @RenderBody()
+        </div>
+        <div id="footer">
+            <p> Website created by team: </p>
+        </div>
+    </body>
 </html>
