@@ -99,6 +99,16 @@ namespace BankServiceGUI.Controllers
             return View();
         }
 
+        [HttpGet]
+        public IActionResult Transactions(int sessionId)
+        {
+            if(sessionId == 12345)
+            {
+                ViewBag.Message = "LoggedIn";
+            }
+            return View();
+        }
+
         public IActionResult Privacy()
         {
             return View();
