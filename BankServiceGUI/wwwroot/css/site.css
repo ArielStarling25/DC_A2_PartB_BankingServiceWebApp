@@ -8,7 +8,7 @@ body {
 
 div#header{
     width: auto;
-    height: 150px;
+    height: 100px;
 }
 
 h2#headerTitle{
@@ -58,6 +58,13 @@ input{
 }
 
 p#profStatus{
+    width: 300px;
+    padding-top: 100px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+p#transStatus {
     width: 300px;
     padding-top: 100px;
     margin-left: auto;
