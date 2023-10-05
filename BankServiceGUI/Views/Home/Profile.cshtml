@@ -1,0 +1,16 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["Title"] = "Profile Page";
+    string message = ViewBag.message;
+}
+
+@if(message != null && message.Equals("LoggedIn"))
+{
+    <p id="profStatus"> Logged in </p>
+}
+else
+{
+    <p id="profStatus"> Please log in to view profile</p>
+}

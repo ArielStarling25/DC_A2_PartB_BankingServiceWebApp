@@ -1,18 +1,75 @@
-html {
-  font-size: 14px;
-}
-
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-html {
-  position: relative;
-  min-height: 100%;
-}
-
 body {
-  margin-bottom: 60px;
+    width: auto;
+    font-family: sans-serif;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 60px;
+}
+
+div#header{
+    width: auto;
+    height: 150px;
+}
+
+h2#headerTitle{
+    margin-left: auto;
+    margin-right: auto;
+}
+
+div#naviBar ul{
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: dimgray;
+}
+
+div#naviBar li{
+    float: left;
+}
+
+div#naviBar li a{
+    display: block;
+    color: aliceblue;
+    text-align: center;
+    padding: 16px;
+    text-decoration: none;
+}
+
+div#naviBar li a:hover{
+    background-color: aqua;
+}
+
+div#mainBody{
+    background-color: lightgrey;
+    height: 400px;
+}
+
+div#LoginForm{
+    width: 300px;
+    padding-top: 100px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+input{
+    display: block;
+    margin: 20px 20px 20px 20px;
+}
+
+p#profStatus{
+    width: 300px;
+    padding-top: 100px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+button{
+    margin: 20px 20px 20px 20px;
+}
+
+div#footer{
+    background-color: aliceblue;
+    text-align: center;
+    height: 100px;
 }
