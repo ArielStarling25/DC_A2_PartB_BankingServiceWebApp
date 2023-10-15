@@ -32,7 +32,7 @@ namespace BankServiceBTier.Controllers
             }
         }
 
-        // GET: api/bprofiles/5
+        // GET: api/bprofiles/{email}
         [HttpGet("{email}")]
         public async Task<ActionResult<Profile>> GetProfiles(string email)
         {
@@ -50,9 +50,9 @@ namespace BankServiceBTier.Controllers
             }
         }
 
-        // PUT: api/bprofile/5
+        // PUT: api/bprofile/{email}
         [HttpPut("{email}")]
-        public async Task<IActionResult> PutBank(string email, [FromBody] Profile profileData)
+        public async Task<IActionResult> PutProfile(string email, [FromBody] Profile profileData)
         {
             RestClient client = new RestClient(httpURL);
             RestRequest req = new RestRequest("/api/profiles/" + email, Method.Put);
@@ -71,7 +71,7 @@ namespace BankServiceBTier.Controllers
 
         // POST: api/bprofile
         [HttpPost]
-        public async Task<ActionResult<Profile>> PostBank([FromBody] Profile profileData)
+        public async Task<ActionResult<Profile>> PostProfile([FromBody] Profile profileData)
         {
             RestClient client = new RestClient(httpURL);
             RestRequest req = new RestRequest("/api/profiles", Method.Post);
@@ -90,7 +90,7 @@ namespace BankServiceBTier.Controllers
 
         // DELETE: api/bprofile/5
         [HttpDelete("{email}")]
-        public async Task<IActionResult> DeleteBank(string email)
+        public async Task<IActionResult> DeleteProfile(string email)
         {
             RestClient client = new RestClient(httpURL);
             RestRequest req = new RestRequest("/api/profiles/" + email, Method.Delete);
