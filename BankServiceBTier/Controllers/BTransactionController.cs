@@ -17,24 +17,24 @@ namespace BankServiceBTier.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Transaction>>> GetTransactions()
         {
-            List<Transaction> profiles = null;
+            List<Transaction> trans = null;
             RestClient client = new RestClient(httpURL);
             RestRequest req = new RestRequest("/api/transactions", Method.Get);
             RestResponse response = await client.GetAsync(req);
-            profiles = JsonConvert.DeserializeObject<List<Transaction>>(response.Content);
-            if (profiles == null)
+            trans = JsonConvert.DeserializeObject<List<Transaction>>(response.Content);
+            if (trans == null)
             {
                 return NotFound();
             }
             else
             {
-                return Ok(profiles);
+                return Ok(trans);
             }
         }
 
-        // GET: api/btransaction/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Transaction>> GetProfiles(uint id)
+        // GET: api/btransaction/accno/5
+        [HttpGet("id/{id}")]
+        public async Task<ActionResult<Transaction>> GetTransactions(uint id)
         {
             RestClient client = new RestClient(httpURL);
             RestRequest req = new RestRequest("/api/transactions/" + id, Method.Get);
@@ -50,9 +50,44 @@ namespace BankServiceBTier.Controllers
             }
         }
 
+        // GET: api/btransaction/accno/5
+        [HttpGet("accNo/{accNo}")]
+        public async Task<IActionResult> GetTransaction(int accNo)
+        {
+            List<Transaction> trans = null;
+            List<Transaction> transactions = new List<Transaction>();
+            RestClient client = new RestClient(httpURL);
+            RestRequest req = new RestRequest("/api/transactions", Method.Get);
+            RestResponse response = await client.GetAsync(req);
+            trans = JsonConvert.DeserializeObject<List<Transaction>>(response.Content);
+            if (trans == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                for(int i = 0; i < trans.Count; i++)
+                {
+                    if (trans[i].accountNumber == accNo)
+                    {
+                        transactions.Add(trans[i]);
+                    }
+                }
+
+                if(transactions.Count == 0)
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    return Ok(transactions);
+                }
+            }
+        }
+
         // PUT: api/btransaction/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutBank(uint id, [FromBody] Transaction transData)
+        public async Task<IActionResult> PutTrans(uint id, [FromBody] Transaction transData)
         {
             RestClient client = new RestClient(httpURL);
             RestRequest req = new RestRequest("/api/transactions/" + id, Method.Put);
@@ -71,7 +106,7 @@ namespace BankServiceBTier.Controllers
 
         // POST: api/btransaction
         [HttpPost]
-        public async Task<ActionResult<Transaction>> PostBank([FromBody] Transaction transData)
+        public async Task<ActionResult<Transaction>> PostTrans([FromBody] Transaction transData)
         {
             RestClient client = new RestClient(httpURL);
             RestRequest req = new RestRequest("/api/transactions", Method.Post);
@@ -90,7 +125,7 @@ namespace BankServiceBTier.Controllers
 
         // DELETE: api/btransaction/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteBank(uint id)
+        public async Task<IActionResult> DeleteTrans(uint id)
         {
             RestClient client = new RestClient(httpURL);
             RestRequest req = new RestRequest("/api/transactions/" + id, Method.Delete);

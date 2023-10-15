@@ -248,12 +248,37 @@ namespace BankServiceGUI.Controllers
         }
 
         //returns id specific transaction
-        [HttpGet("transaction/{id}")]
+        [HttpGet("transaction/id/{id}")]
         public async Task<IActionResult> getTransById(int id)
         {
             Transaction trans = null;
             RestClient client = new RestClient(httpURL);
-            RestRequest req = new RestRequest("/api/btransaction/" + id, Method.Get);
+            RestRequest req = new RestRequest("/api/btransaction/id/" + id, Method.Get);
+            RestResponse response = await client.GetAsync(req);
+            if (response.IsSuccessStatusCode)
+            {
+                trans = JsonConvert.DeserializeObject<Transaction>(response.Content);
+                if (trans == null)
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    return Ok(JsonConvert.SerializeObject(trans));
+                }
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+
+        [HttpGet("transaction/accno/{accNo}")]
+        public async Task<IActionResult> getTransByAccNo(int accNo)
+        {
+            Transaction trans = null;
+            RestClient client = new RestClient(httpURL);
+            RestRequest req = new RestRequest("/api/btransaction/accno/" + accNo, Method.Get);
             RestResponse response = await client.GetAsync(req);
             if (response.IsSuccessStatusCode)
             {
