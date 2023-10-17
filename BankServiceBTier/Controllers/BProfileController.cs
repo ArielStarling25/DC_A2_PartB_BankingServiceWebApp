@@ -32,7 +32,7 @@ namespace BankServiceBTier.Controllers
             }
         }
 
-        // GET: api/bprofiles/{email}
+        // GET: api/bprofile/{email}
         [HttpGet("{email}")]
         public async Task<ActionResult<Profile>> GetProfiles(string email)
         {

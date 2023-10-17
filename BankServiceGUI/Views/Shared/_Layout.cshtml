@@ -1,5 +1,6 @@
 ﻿@{
     string message = ViewBag.message;
+    string email = ViewBag.ProfileEmail;
 }
 
 <!DOCTYPE html>
@@ -14,17 +15,16 @@
             <h2 id="headerTitle"> Bank Data Web Service Web Application </h2>
         </div>
         <div id="naviBar">
-            @if(message != null && message.Equals("LoggedIn"))
+            @if(email != null)
             {
+                byte[] bytes = System.Text.Encoding.UTF8.GetBytes(email);
+                string encodedEmail = Convert.ToBase64String(bytes);
                 <ul>
                     <li>
-                        <a href="/Home/Index?sessionId=12345">Login</a>
+                        <a href="/Home/Profile?email=@encodedEmail">Profile</a>
                     </li>
                     <li>
-                        <a href="/Home/Profile?sessionId=12345">Profile</a>
-                    </li>
-                    <li>
-                        <a href="/Home/Transactions?sessionId=12345">Transactions</a>
+                        <a href="/Home/Transactions?email=@encodedEmail">Transactions History</a>
                     </li>
                     <li>
                         <a href="/Home/Index">Logout</a>

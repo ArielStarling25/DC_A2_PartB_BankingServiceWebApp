@@ -3,10 +3,10 @@
 *@
 @{
     ViewData["Title"] = "Transactions Page";
-    string message = ViewBag.message;
+    string email = ViewBag.ProfileEmail;
 }
 
-@if(message != null && message.Equals("LoggedIn")) //Include transaction history functionality
+@if(email != null) //Include transaction history functionality
 {
     <p id="transStatus"> Logged in </p>
 }

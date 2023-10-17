@@ -3,12 +3,40 @@
 *@
 @{
     ViewData["Title"] = "Profile Page";
-    string message = ViewBag.message;
+    string name = ViewBag.ProfileName;
+    string email = ViewBag.ProfileEmail;
+    string address = ViewBag.ProfileAddr;
+    string phone = ViewBag.ProfilePhone;
+    string password = ViewBag.ProfilePassword;
+    string picture = ViewBag.ProfilePicture;
 }
-
-@if(message != null && message.Equals("LoggedIn")) //Profile Viewing and editing
+@if(email != null) //Profile Viewing and editing
 {
-    <p id="profStatus"> Logged in </p>
+    <div>
+        <div class="center-image">
+            <p><img alt="" src="@picture" style="height: 120px;" /></p>
+        </div>
+
+        <style>
+            .center-image {text-align: center;}
+            .center-image img {display: inline-block;}
+        </style>
+
+        <hr />
+        <p><strong>Name: </strong>@name</p>
+
+        <hr />
+        <p><strong>Email: </strong>@email</p>
+
+        <hr />
+        <p><strong>Address: </strong>@address</p>
+
+        <hr />
+        <p><strong>Phone Number: </strong>@phone</p>
+
+        <hr />
+        <p><strong>Password: </strong>@password</p>
+    </div>
 }
 else
 {

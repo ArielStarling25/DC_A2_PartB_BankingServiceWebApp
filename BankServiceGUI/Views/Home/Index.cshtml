@@ -1,11 +1,12 @@
 ﻿@{
     ViewData["Title"] = "Log In Page";
-    string message = ViewBag.message;
+    string email = ViewBag.ProfileEmail;
     string error = ViewBag.Error;
+    string name = ViewBag.ProfileName;
 }
 
-@if(message != null && message.Equals("LoggedIn")){
-    <p id="status">User Successfully Logged In!</p>
+@if(email != null){
+    <p id="status">Welcome, @name!</p>
     
 }
 else{

@@ -5,6 +5,7 @@ using BankDataWebService.Models;
 using Microsoft.Identity.Client;
 using Newtonsoft.Json;
 using RestSharp;
+using Microsoft.AspNetCore.Http;
 
 namespace BankServiceGUI.Controllers
 {
@@ -18,18 +19,9 @@ namespace BankServiceGUI.Controllers
             _logger = logger;
         }
 
+        [HttpGet]
         public IActionResult Index()
         {
-            return View();
-        }
-
-        [HttpGet]
-        public IActionResult Index(int sessionId)
-        {
-            if (sessionId == 12345)
-            {
-                ViewBag.Message = "LoggedIn";
-            }
             return View();
         }
 
@@ -54,21 +46,18 @@ namespace BankServiceGUI.Controllers
                     {
                         if (password.Equals(profile.password))
                         {
-                            ViewBag.Message = "LoggedIn";
                             ViewBag.ProfileName = profile.name;
                             ViewBag.ProfileEmail = profile.email;
-                            ViewBag.ProfileAddr = profile.address;
-                            ViewBag.ProfilePhone = profile.phone;
-                            ViewBag.ProfilePassword = profile.password;
-                            ViewBag.ProfilePictureData = profile.picture;
                         }
                         else
                         {
+                            ViewBag.ProfileEmail = null;
                             ViewBag.Error = "Password is incorrect!";
                         }
                     }
                     else
                     {
+                        ViewBag.ProfileEmail = null;
                         ViewBag.Error = "Email does not exist!";
                     }
                 }
@@ -104,10 +93,11 @@ namespace BankServiceGUI.Controllers
             }
         }
 
-        //returns a profile by email id
         [HttpGet("profile/{email}")]
-        public async Task<IActionResult> getProfileByEmail(string email)
+        //returns a profile by email id
+        public async Task<IActionResult> getProfile(string email)
         {
+            string decodedEmail = decodeString(email);
             Profile profile = null;
             RestClient client = new RestClient(httpURL);
             RestRequest req = new RestRequest("/api/bprofile/" + email, Method.Get);
@@ -116,18 +106,25 @@ namespace BankServiceGUI.Controllers
             {
                 profile = JsonConvert.DeserializeObject<Profile>(response.Content);
                 if (profile == null)
-                {
+                { 
                     return NotFound();
                 }
                 else
                 {
-                    return Ok(JsonConvert.SerializeObject(profile));
+                    ViewBag.ProfileName = profile.name;;
+                    ViewBag.ProfilePhone = profile.phone;
+                    ViewBag.ProfileEmail = profile.email;
+                    ViewBag.ProfileAddr = profile.address;
+                    ViewBag.ProfilePassword = profile.password;
+                    ViewBag.ProfilePicture = profile.picture;
+                    ViewBag.PictureType = "image/jpeg";
                 }
             }
             else
             {
                 return NotFound();
             }
+            return View("Profile");
         }
 
         //Updating User Data
@@ -336,29 +333,50 @@ namespace BankServiceGUI.Controllers
             return found;
         }
 
-        [HttpGet]
-        public IActionResult Profile(int sessionId)
+        public async Task<IActionResult> Profile(string email)
         {
-            if(sessionId == 12345)
+            string decodedEmail = decodeString(email);
+            Profile profile = null;
+            RestClient client = new RestClient(httpURL);
+            RestRequest req = new RestRequest("/api/bprofile/" + decodedEmail, Method.Get);
+            RestResponse response = await client.GetAsync(req);
+            if (response.IsSuccessStatusCode)
             {
-                ViewBag.Message = "LoggedIn";
+                profile = JsonConvert.DeserializeObject<Profile>(response.Content);
+                if (profile == null)
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    ViewBag.ProfileName = profile.name; ;
+                    ViewBag.ProfilePhone = profile.phone;
+                    ViewBag.ProfileEmail = profile.email;
+                    ViewBag.ProfileAddr = profile.address;
+                    ViewBag.ProfilePassword = profile.password;
+                    ViewBag.ProfilePicture = string.Format("data:image/png;base64,{0}", profile.picture);
+                }
+            }
+            else
+            {
+                return NotFound();
             }
             return View();
         }
 
         [HttpGet]
-        public IActionResult Transactions(int sessionId)
+        public IActionResult Transactions(string email)
         {
-            if(sessionId == 12345)
-            {
-                ViewBag.Message = "LoggedIn";
-            }
+            string decodedEmail = decodeString(email);
+            ViewBag.ProfileEmail = decodedEmail;
             return View();
         }
 
-        public IActionResult Privacy()
+        private string decodeString(string encodedString) 
         {
-            return View();
+            byte[] data = Convert.FromBase64String(encodedString);
+            string decodedString = System.Text.Encoding.UTF8.GetString(data);
+            return decodedString;
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
