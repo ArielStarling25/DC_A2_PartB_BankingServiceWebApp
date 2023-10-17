@@ -36,38 +36,41 @@ namespace BankServiceGUI.Controllers
         [HttpPost]
         public async Task<IActionResult> Index(string email, string password)
         {
-            List<Profile> profiles = null;
-            RestClient client = new RestClient(httpURL);
-            RestRequest req = new RestRequest("/api/bprofile", Method.Get);
-            RestResponse response = await client.GetAsync(req);
-            profiles = JsonConvert.DeserializeObject<List<Profile>>(response.Content);
-            if (profiles == null)
+            if (email != null && password != null)
             {
-                ViewBag.Error = "Error in obtaining profile information";
-            }
-            else
-            {
-                Profile profile = new Profile();
-                if (profileExists(email, profiles, out profile))
+                List<Profile> profiles = null;
+                RestClient client = new RestClient(httpURL);
+                RestRequest req = new RestRequest("/api/bprofile", Method.Get);
+                RestResponse response = await client.GetAsync(req);
+                profiles = JsonConvert.DeserializeObject<List<Profile>>(response.Content);
+                if (profiles == null)
                 {
-                    if (password.Equals(profile.password))
-                    {
-                        ViewBag.Message = "LoggedIn";
-                        ViewBag.ProfileName = profile.name;
-                        ViewBag.ProfileEmail = profile.email;
-                        ViewBag.ProfileAddr = profile.address;
-                        ViewBag.ProfilePhone = profile.phone;
-                        ViewBag.ProfilePassword = profile.password;
-                        ViewBag.ProfilePictureData = profile.picture;
-                    }
-                    else
-                    {
-                        ViewBag.Error = "Password is incorrect!";
-                    }
+                    ViewBag.Error = "Error in obtaining profile information";
                 }
                 else
                 {
-                    ViewBag.Error = "Email does not exist!";
+                    Profile profile = new Profile();
+                    if (profileExists(email, profiles, out profile))
+                    {
+                        if (password.Equals(profile.password))
+                        {
+                            ViewBag.Message = "LoggedIn";
+                            ViewBag.ProfileName = profile.name;
+                            ViewBag.ProfileEmail = profile.email;
+                            ViewBag.ProfileAddr = profile.address;
+                            ViewBag.ProfilePhone = profile.phone;
+                            ViewBag.ProfilePassword = profile.password;
+                            ViewBag.ProfilePictureData = profile.picture;
+                        }
+                        else
+                        {
+                            ViewBag.Error = "Password is incorrect!";
+                        }
+                    }
+                    else
+                    {
+                        ViewBag.Error = "Email does not exist!";
+                    }
                 }
             }
             return View();
