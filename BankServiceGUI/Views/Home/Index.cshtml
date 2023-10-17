@@ -3,9 +3,10 @@
     string email = ViewBag.ProfileEmail;
     string error = ViewBag.Error;
     string name = ViewBag.ProfileName;
+    string type = ViewBag.ProfileType;
 }
 
-@if(email != null){
+@if(email != null && type.Equals("user")){
     <p id="status">Welcome, @name!</p>
     
 }

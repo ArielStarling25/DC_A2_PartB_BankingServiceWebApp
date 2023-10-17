@@ -48,6 +48,7 @@ namespace BankServiceGUI.Controllers
                         {
                             ViewBag.ProfileName = profile.name;
                             ViewBag.ProfileEmail = profile.email;
+                            ViewBag.ProfileType = profile.type;
                         }
                         else
                         {

@@ -16,5 +16,6 @@ namespace BankDataWebService.Models
         public string? phone { get; set; }
         public string? picture { get; set; }
         public string? password { get; set; }
+        public string? type { get; set; }
     }
 }

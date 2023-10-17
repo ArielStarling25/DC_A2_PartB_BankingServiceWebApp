@@ -22,7 +22,7 @@ namespace BankDataWebService.Data
 
             BankGene bankGene = new BankGene();
             ProfileGene profileGene = new ProfileGene();
-            TransactionGene transactionGene = new TransactionGene();
+            TransactionGene transactionGene = new TransactionGene(50);
             for (int i = 0; i < 50; i++)
             {
                 Profile tempP = profileGene.GetNextProfile();

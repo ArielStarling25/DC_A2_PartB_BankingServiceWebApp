@@ -3,8 +3,14 @@
     public class TransactionGene
     {
         private Random random = new Random();
-        int index = 100000;
         int id = 0;
+        int max;
+        int index = 100000;
+
+        public TransactionGene(int max)
+        {
+            this.max += max;
+        }
 
         private int GetId()
         {
@@ -18,9 +24,19 @@
             return index;
         }
 
+        private int GetToAccountNumber()
+        {
+            int toReturn = index +1;
+            if (toReturn == max)
+            {
+                toReturn = 100000;
+            }
+            return toReturn;
+        }
+
         private double GetAmount()
         {
-            return random.Next(-99999, 99999);
+            return random.Next(1, 99999);
         }
 
         public Transaction GetNextTransaction()
@@ -28,7 +44,9 @@
             Transaction t = new Transaction();
             t.Id = GetId();
             t.accountNumber = GetAccountNumber();
+            t.toAccountNumber = GetToAccountNumber();
             t.amount = GetAmount();
+            t.description = "";
             return t;
         }
     }

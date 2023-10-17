@@ -46,6 +46,7 @@
             p.address = GetAddress();
             p.picture = GetPicture();
             p.password = GetPassword();
+            p.type = "user";
             index++;
             return p;
         }
