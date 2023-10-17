@@ -25,10 +25,10 @@ namespace BankDataWebService.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Bank>>> GetBanks()
         {
-          if (_context.Banks == null)
-          {
-              return NotFound();
-          }
+            if (_context.Banks == null)
+            {
+                return NotFound();
+            }
             return await _context.Banks.ToListAsync();
         }
 
@@ -36,10 +36,10 @@ namespace BankDataWebService.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Bank>> GetBank(int id)
         {
-          if (_context.Banks == null)
-          {
-              return NotFound();
-          }
+            if (_context.Banks == null)
+            {
+                return NotFound();
+            }
             var bank = await _context.Banks.FindAsync(id);
 
             if (bank == null)

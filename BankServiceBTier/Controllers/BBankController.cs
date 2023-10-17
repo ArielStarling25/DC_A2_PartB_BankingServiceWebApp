@@ -33,20 +33,29 @@ namespace BankServiceBTier.Controllers
         }
 
         // GET: api/bbank/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Bank>> GetBanks(uint id)
+        [HttpGet("{email}")]
+        public async Task<ActionResult<Bank>> GetBanks(string email)
         {
+            List<Bank> banks = new List<Bank>();
             RestClient client = new RestClient(httpURL);
-            RestRequest req = new RestRequest("/api/banks/" + id, Method.Get);
+            RestRequest req = new RestRequest("/api/banks", Method.Get);
             RestResponse response = await client.GetAsync(req);
-            Bank acc = JsonConvert.DeserializeObject<Bank>(response.Content);
-            if (acc == null)
+            banks = JsonConvert.DeserializeObject<List<Bank>>(response.Content);
+            if (banks == null)
             {
-                return NotFound("Not Found: " + id);
+                return NotFound();
             }
             else
             {
-                return Ok(acc);
+                List<Bank> matchBank = new List<Bank>();
+                foreach (Bank bank in banks) 
+                { 
+                    if (bank.email.Equals(email))
+                    {
+                        matchBank.Add(bank);
+                    }
+                }
+                return Ok(matchBank);
             }
         }
 

@@ -10,7 +10,8 @@
     string password = ViewBag.ProfilePassword;
     string picture = ViewBag.ProfilePicture;
 }
-@if(email != null) //Profile Viewing and editing
+
+@if(email != null)
 {
     <div>
         <div class="center-image">
@@ -18,8 +19,13 @@
         </div>
 
         <style>
-            .center-image {text-align: center;}
-            .center-image img {display: inline-block;}
+            .center-image {
+                text-align: center;
+            }
+
+                .center-image img {
+                    display: inline-block;
+                }
         </style>
 
         <hr />
@@ -38,7 +44,8 @@
         <p><strong>Password: </strong>@password</p>
     </div>
 }
+    
 else
 {
-    <p id="profStatus"> Please log in to view profile</p>
+    <p> Please login first!</p>
 }
