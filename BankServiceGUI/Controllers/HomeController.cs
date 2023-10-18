@@ -543,7 +543,8 @@ namespace BankServiceGUI.Controllers
                         {
                             ViewBag.ProfileEmail = "email";
                             ViewBag.ProfileType = "admin";
-                            ViewBag.UserMenuMsg = "Successfully modified profile, Click Manage Users to return";
+                            ViewBag.UserMenuMsg = "Successfully modified profile";
+                            //return Ok(response2);
                         }
                         else
                         {
@@ -555,6 +556,10 @@ namespace BankServiceGUI.Controllers
                         return BadRequest();
                     }
                 }
+            }
+            else
+            {
+                return NotFound();
             }
             return View();
         }
