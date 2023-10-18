@@ -9,13 +9,13 @@
     string phone = ViewBag.ProfilePhone;
     string password = ViewBag.ProfilePassword;
     string picture = ViewBag.ProfilePicture;
-    string type = ViewBag.ProfileType;
+    string profType = ViewBag.ProfileType;
 }
 
 @if(email != null)
 {
     <div>
-        @if (!type.Equals("user"))
+        @if (!profType.Equals("user"))
         {
             <div id="adminTitleDiv">
                 <h4 id="adminTitle"> -- Admin -- </h4>
@@ -52,7 +52,6 @@
         <p><strong> Password: </strong>@password</p>
     </div>
 }
-    
 else
 {
     <p> Please login first!</p>

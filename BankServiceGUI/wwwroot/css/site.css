@@ -82,7 +82,7 @@ div#footer{
 }
 
 div#adminTitleDiv{
-    align-content: center;
+    place-content: center;
 }
 
 h4#adminTitle{

@@ -13,6 +13,7 @@ namespace BankServiceGUI.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly string httpURL = "http://localhost:5103";
+        private string savedProfileType = "";
 
         public HomeController(ILogger<HomeController> logger)
         {
@@ -49,6 +50,7 @@ namespace BankServiceGUI.Controllers
                             ViewBag.ProfileName = profile.name;
                             ViewBag.ProfileEmail = profile.email;
                             ViewBag.ProfileType = profile.type;
+                            savedProfileType = profile.type;
                         }
                         else
                         {
@@ -356,6 +358,7 @@ namespace BankServiceGUI.Controllers
                     ViewBag.ProfileEmail = profile.email;
                     ViewBag.ProfileAddr = profile.address;
                     ViewBag.ProfilePassword = profile.password;
+                    ViewBag.ProfileType = profile.type;
                     ViewBag.ProfilePicture = string.Format("data:image/png;base64,{0}", profile.picture);
                 }
             }
@@ -390,6 +393,52 @@ namespace BankServiceGUI.Controllers
         {
             string decodedEmail = decodeString(email);
             ViewBag.ProfileEmail = decodedEmail;
+            return View();
+        }
+
+        public async Task<IActionResult> UserManage(string email)
+        {
+            string decodedEmail = decodeString(email);
+            RestClient client = new RestClient(httpURL);
+            RestRequest req = new RestRequest("/api/bprofile/" + decodedEmail, Method.Get);
+            RestResponse response = await client.GetAsync(req);
+            if (response.IsSuccessStatusCode)
+            {
+                Profile adminProf = JsonConvert.DeserializeObject<Profile>(response.Content);
+                if (adminProf == null)
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    List<Profile> profiles = null;
+                    RestClient client2 = new RestClient(httpURL);
+                    RestRequest req2 = new RestRequest("/api/bprofile/", Method.Get);
+                    RestResponse response2 = await client.GetAsync(req2);
+                    if (response2.IsSuccessStatusCode)
+                    {
+                        if (adminProf.type.Equals("admin"))
+                        {
+                            profiles = JsonConvert.DeserializeObject<List<Profile>>(response2.Content);
+                            ViewBag.ProfileList = profiles;
+                            ViewBag.ProfileEmail = decodedEmail;
+                            ViewBag.ProfileType = adminProf.type;
+                        }
+                        else
+                        {
+                            ViewBag.ProfileEmail = null;
+                        }
+                    }
+                    else
+                    {
+                        return NotFound();
+                    }
+                }
+            }
+            else
+            {
+                return NotFound();
+            }
             return View();
         }
 

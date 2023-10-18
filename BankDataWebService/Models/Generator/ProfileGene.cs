@@ -37,7 +37,7 @@
             return Convert.ToBase64String(file);
         }
 
-        private string GetType()
+        private string GetProfType()
         {
             string chosenString = "";
             int chosenNum = random.Next(1,31); // chooses a number 1 to 30
@@ -61,7 +61,7 @@
             p.address = GetAddress();
             p.picture = GetPicture();
             p.password = GetPassword();
-            p.type = GetType();
+            p.type = GetProfType();
             index++;
             return p;
         }
