@@ -80,3 +80,11 @@ div#footer{
     text-align: center;
     height: 100px;
 }
+
+div#adminTitleDiv{
+    align-content: center;
+}
+
+h4#adminTitle{
+    font-weight: bold;
+}

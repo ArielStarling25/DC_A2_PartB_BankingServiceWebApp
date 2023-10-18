@@ -118,6 +118,7 @@ namespace BankServiceGUI.Controllers
                     ViewBag.ProfileAddr = profile.address;
                     ViewBag.ProfilePassword = profile.password;
                     ViewBag.ProfilePicture = profile.picture;
+                    ViewBag.ProfileType = profile.type;
                     ViewBag.PictureType = "image/jpeg";
                 }
             }
