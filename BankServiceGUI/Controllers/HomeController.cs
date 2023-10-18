@@ -383,6 +383,7 @@ namespace BankServiceGUI.Controllers
                 banks = JsonConvert.DeserializeObject<List<Bank>>(response.Content);
                 ViewBag.Banks = banks;
                 ViewBag.ProfileEmail = decodedEmail;
+                ViewBag.ProfileType = "user";
             }
             else
             {
@@ -403,6 +404,7 @@ namespace BankServiceGUI.Controllers
                 transactions = JsonConvert.DeserializeObject<List<Transaction>>(response.Content);
                 ViewBag.Transactions = transactions;
                 ViewBag.ProfileEmail = decodedEmail;
+                ViewBag.ProfileType = "user";
             }
             else
             {
