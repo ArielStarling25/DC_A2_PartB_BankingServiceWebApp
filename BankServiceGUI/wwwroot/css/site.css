@@ -1,5 +1,6 @@
 body {
     width: auto;
+    height: auto;
     font-family: sans-serif;
     margin-left: auto;
     margin-right: auto;
@@ -42,7 +43,8 @@ div#naviBar li a:hover{
 
 div#mainBody{
     background-color: lightgrey;
-    height: 400px;
+    height: 500px;
+    resize: vertical;
 }
 
 div#LoginForm{
@@ -79,4 +81,25 @@ div#footer{
     background-color: aliceblue;
     text-align: center;
     height: 100px;
+}
+
+div#profileBody{
+    background-color: lightgray;
+}
+
+div#adminTitleDiv{
+    place-content: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+h4#adminTitle{
+    font-weight: bold;
+}
+
+div#UserMenuEdit {
+    width: 300px;
+    padding-top: 100px;
+    margin-left: auto;
+    margin-right: auto;
 }

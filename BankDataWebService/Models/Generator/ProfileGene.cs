@@ -37,6 +37,21 @@
             return Convert.ToBase64String(file);
         }
 
+        private string GetProfType()
+        {
+            string chosenString = "";
+            int chosenNum = random.Next(1,31); // chooses a number 1 to 30
+            if(chosenNum == 15) // 1 in 30 are admin profiles
+            {
+                chosenString = "admin";
+            }
+            else
+            {
+                chosenString = "user";
+            }
+            return chosenString;
+        }
+
         public Profile GetNextProfile()
         {
             Profile p = new Profile();
@@ -46,7 +61,7 @@
             p.address = GetAddress();
             p.picture = GetPicture();
             p.password = GetPassword();
-            p.type = "user";
+            p.type = GetProfType();
             index++;
             return p;
         }

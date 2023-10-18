@@ -9,11 +9,19 @@
     string phone = ViewBag.ProfilePhone;
     string password = ViewBag.ProfilePassword;
     string picture = ViewBag.ProfilePicture;
+    string profType = ViewBag.ProfileType;
 }
 
 @if(email != null)
 {
-    <div>
+    <div id="profileBody">
+        @if (!profType.Equals("user"))
+        {
+            <div id="adminTitleDiv">
+                <h4 id="adminTitle"> -- Admin -- </h4>
+            </div>
+        }
+
         <div class="center-image">
             <p><img alt="" src="@picture" style="height: 120px;" /></p>
         </div>
@@ -29,22 +37,21 @@
         </style>
 
         <hr />
-        <p><strong>Name: </strong>@name</p>
+        <p><strong> Name: </strong>@name</p>
 
         <hr />
-        <p><strong>Email: </strong>@email</p>
+        <p><strong> Email: </strong>@email</p>
 
         <hr />
-        <p><strong>Address: </strong>@address</p>
+        <p><strong> Address: </strong>@address</p>
 
         <hr />
-        <p><strong>Phone Number: </strong>@phone</p>
+        <p><strong> Phone Number: </strong>@phone</p>
 
         <hr />
-        <p><strong>Password: </strong>@password</p>
+        <p><strong> Password: </strong>@password</p>
     </div>
 }
-    
 else
 {
     <p> Please login first!</p>
