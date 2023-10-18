@@ -42,7 +42,8 @@ div#naviBar li a:hover{
 
 div#mainBody{
     background-color: lightgrey;
-    height: 400px;
+    height: 600px;
+    resize: vertical; 
 }
 
 div#LoginForm{
@@ -79,6 +80,10 @@ div#footer{
     background-color: aliceblue;
     text-align: center;
     height: 100px;
+}
+
+div#profileBody{
+    background-color: lightgray;
 }
 
 div#adminTitleDiv{
