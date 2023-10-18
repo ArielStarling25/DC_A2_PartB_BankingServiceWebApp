@@ -4,6 +4,12 @@
     ViewData["Title"] = "AccountSummary";
     List<Bank> banks = ViewBag.Banks;
     string email = ViewBag.ProfileEmail;
+    string encodedEmail = null;
+    if (email != null)
+    {
+        byte[] bytes = System.Text.Encoding.UTF8.GetBytes(email);
+        encodedEmail = Convert.ToBase64String(bytes);
+    }
 }
 @if (email != null) //Profile Viewing and editing
 {
@@ -12,14 +18,14 @@
             <thead>
                 <tr>
                     <th><strong>Account Number</strong></th>
-                    <th><strong>Balance</strong>Balance</th>
+                    <th><strong>Balance</strong></th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (Bank item in banks)
                 {
                     <tr>
-                        <td><a href="">@item.accountNumber</a></td>
+                        <td><a href="/Home/TransactionHistory?email=@encodedEmail&accountNumber=@item.accountNumber">@item.accountNumber</a></td>
                         <td>RM @item.balance</td>
                     </tr>
                 }

@@ -1,16 +1,65 @@
-﻿@*
+﻿@using BankDataWebService.Models;
+@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
     ViewData["Title"] = "Transactions History Page";
+    List<Transaction> transactions = ViewBag.Transactions;
     string email = ViewBag.ProfileEmail;
 }
 
-@if(email != null) //Include transaction history functionality
+
+@if (email != null)
 {
-    <p id="transStatus"> Logged in </p>
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th><strong>From Account</strong></th>
+                    <th><strong>To Account</strong></th>
+                    <th><strong>Balance</strong></th>
+                    <th><strong>Description</strong></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (Transaction transaction in transactions)
+                {
+                    <tr>
+                        <td>@transaction.accountNumber</td>
+                        <td>@transaction.toAccountNumber</td>
+                        <td>RM @transaction.amount</td>
+                        <td>@transaction.description</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <style>
+        .table-container {
+            width: 50%;
+            height: 100%;
+            margin: 0 auto;
+            overflow-x: auto;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
 }
 else
 {
-    <p> Please login first! </p>
+    <p> Please login first!</p>
 }

@@ -33,20 +33,24 @@ namespace BankServiceBTier.Controllers
         }
 
         // GET: api/btransaction/accno/5
-        [HttpGet("id/{id}")]
-        public async Task<ActionResult<Transaction>> GetTransactions(uint id)
+        [HttpGet("{accountNumber}")]
+        public async Task<ActionResult<Transaction>> GetTransactions(int accountNumber)
         {
             RestClient client = new RestClient(httpURL);
-            RestRequest req = new RestRequest("/api/transactions/" + id, Method.Get);
+            RestRequest req = new RestRequest("/api/transactions/" + accountNumber, Method.Get);
             RestResponse response = await client.GetAsync(req);
-            Transaction acc = JsonConvert.DeserializeObject<Transaction>(response.Content);
-            if (acc == null)
+            List<Transaction> transactions = JsonConvert.DeserializeObject<List<Transaction>>(response.Content);
+            if (response.IsSuccessStatusCode)
             {
-                return NotFound("Not Found: " + id);
+                if (transactions == null)
+                {
+                    transactions = new List<Transaction>();
+                }
+                return Ok(transactions);
             }
             else
             {
-                return Ok(acc);
+                return BadRequest(response.Content);
             }
         }
 

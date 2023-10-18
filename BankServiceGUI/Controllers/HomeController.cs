@@ -385,10 +385,23 @@ namespace BankServiceGUI.Controllers
             return View();
         }
 
-        public async Task<IActionResult> TransactionHistory(string email)
+        public async Task<IActionResult> TransactionHistory(string email, int accountNumber)
         {
             string decodedEmail = decodeString(email);
-            ViewBag.ProfileEmail = decodedEmail;
+            List<Transaction> transactions = null;
+            RestClient client = new RestClient(httpURL);
+            RestRequest req = new RestRequest("/api/btransaction/" + accountNumber, Method.Get);
+            RestResponse response = await client.GetAsync(req);
+            if (response.IsSuccessStatusCode)
+            {
+                transactions = JsonConvert.DeserializeObject<List<Transaction>>(response.Content);
+                ViewBag.Transactions = transactions;
+                ViewBag.ProfileEmail = decodedEmail;
+            }
+            else
+            {
+                return NotFound();
+            }
             return View();
         }
 
