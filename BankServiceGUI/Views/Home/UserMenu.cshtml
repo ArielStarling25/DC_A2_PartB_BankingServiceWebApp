@@ -28,6 +28,7 @@
         {
             <div id="UserMenuEdit">
                 <form action="/Home/" method="put">
+                    <input id="adminEmail" type="hidden" name="adminemail" value=@email />
                     <input id="userEmail" type="text" name="useremail" placeholder="User Email" value=@profileUser.email />
                     <input id="userName" type="text" name="username" placeholder="User Name" value=@profileUser.name />
                     <input id="userAddr" type="text" name="useraddr" placeholder="User Addr" value=@removeSpaces(profileUser.address) />
@@ -37,7 +38,8 @@
                     <input type="submit" value="Submit">
                 </form>
                 <form action="/Home/" method="delete">
-                    <input id="userEmail" type="text" name="useremail" placeholder="User Email" value=@profileUser.email />
+                    <input id="adminEmail" type="hidden" name="adminemail" value=@profileUser.email />
+                    <input id="userEmail" type="hidden" name="useremail" value=@profileUser.email />
                     <input type="submit" value="Delete Profile">
                 </form>
             </div>

@@ -524,6 +524,7 @@ namespace BankServiceGUI.Controllers
             return View();
         }
 
+        //ISSUE: Why doesnt the 'submit' in UserMenu direct the data to this?
         [HttpPut]
         public async Task<IActionResult> UserMenu(string adminemail, string useremail, string username, string useraddr, string userphone, string userpass, string usertype)
         {
@@ -583,12 +584,14 @@ namespace BankServiceGUI.Controllers
             return View();
         }
 
+        // ISSUE: Not implemented until profile editing is functional
         [HttpDelete]
         public async Task<IActionResult> UserMenu(string useremail)
         {
             return View();
         }
 
+        // ISSUE: Only displays the transactions as is
         public async Task<IActionResult> TransManage(string email)
         {
             string decodedEmail = decodeString(email);
