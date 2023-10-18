@@ -6,6 +6,13 @@
     ViewData["Title"] = "Transaction Management";
     string email = ViewBag.ProfileEmail;
     List<Transaction> transactions = ViewBag.TransactionList;
+
+    string encodeString(string rawString)
+    {
+        byte[] bytes = System.Text.Encoding.UTF8.GetBytes(rawString);
+        string encodedString = Convert.ToBase64String(bytes);
+        return encodedString;
+    }
 }
 
 @if (email != null)
@@ -13,6 +20,55 @@
     <div>
         <h3> Transaction Management </h3>
     </div>
+    <div class="table-transactions">
+        <table>
+            <thead>
+                <tr>
+                    <th><strong>Transaction ID</strong></th>
+                    <th><strong>Sender Account</strong></th>
+                    <th><strong>Recieving Account</strong></th>
+                    <th><strong>Amount</strong></th>
+                    <th><strong>Description</strong></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (Transaction item in transactions)
+                {
+                    <tr>
+                        <td>@item.Id</td>
+                        <td>@item.accountNumber</td>
+                        <td>@item.toAccountNumber</td>
+                        <td>RM @item.amount</td>
+                        <td>@item.description</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <style>
+        .table-transactions {
+            width: 50%;
+            height: 90%;
+            margin: 0 auto;
+            overflow-x: auto;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
 }
 else
 {
