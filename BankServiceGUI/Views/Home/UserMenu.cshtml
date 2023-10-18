@@ -1,0 +1,64 @@
+﻿@using BankDataWebService.Models;
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["Title"] = "User Menu";
+    string email = ViewBag.ProfileEmail;
+    Profile profileUser = ViewBag.ProfileUser;
+    string type = ViewBag.ProfileType;
+    bool editState = ViewBag.EditState;
+    string message = ViewBag.UserMenuMsg;
+    string removeSpaces(string input)
+    {
+        string result = input;
+        if (!String.IsNullOrEmpty(input))
+        {
+            result = String.Concat(input.Where(c => !Char.IsWhiteSpace(c)));
+        }
+        return result;
+    }
+}
+
+@if(email != null)
+{
+    @if (editState)
+    {
+        @if (profileUser != null)
+        {
+            <div id="UserMenuEdit">
+                <form action="/Home/" method="put">
+                    <input id="userEmail" type="text" name="useremail" placeholder="User Email" value=@profileUser.email />
+                    <input id="userName" type="text" name="username" placeholder="User Name" value=@profileUser.name />
+                    <input id="userAddr" type="text" name="useraddr" placeholder="User Addr" value=@removeSpaces(profileUser.address) />
+                    <input id="userPhone" type="text" name="userphone" placeholder="User Phone" value=@profileUser.phone />
+                    <input id="userPass" type="text" name="userpass" placeholder="Password" value=@profileUser.password />
+                    <input id="userType" type="text" name="usertype" placeholder="Profile Type" value=@profileUser.type />
+                    <input type="submit" value="Submit">
+                </form>
+                <form action="/Home/" method="delete">
+                    <input id="userEmail" type="text" name="useremail" placeholder="User Email" value=@profileUser.email />
+                    <input type="submit" value="Delete Profile">
+                </form>
+            </div>
+        }
+        else
+        {
+
+        }
+        <p>@message</p>
+    }
+
+    <style>
+        div#UserMenuEdit{
+            width: 300px;
+            padding-top: 10px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+    </style>
+}
+else
+{
+    <p>Failed to display User Menu</p>
+}

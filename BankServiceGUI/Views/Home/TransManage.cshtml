@@ -1,21 +1,17 @@
-﻿@*
+﻿@using BankDataWebService.Models;
+@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
     ViewData["Title"] = "Transaction Management";
-    string name = ViewBag.ProfileName;
     string email = ViewBag.ProfileEmail;
-    string address = ViewBag.ProfileAddr;
-    string phone = ViewBag.ProfilePhone;
-    string password = ViewBag.ProfilePassword;
-    string picture = ViewBag.ProfilePicture;
-    string profType = ViewBag.ProfileType;
+    List<Transaction> transactions = ViewBag.TransactionList;
 }
 
 @if (email != null)
 {
     <div>
-        <p> Transaction Management </p>
+        <h3> Transaction Management </h3>
     </div>
 }
 else

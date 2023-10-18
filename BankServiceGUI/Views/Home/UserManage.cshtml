@@ -4,15 +4,73 @@
 *@
 @{
     ViewData["Title"] = "User Management";
-    string email = ViewBag.ProfileEmail;
+    string adminEmail = ViewBag.ProfileEmail;
     List<Profile> profiles = ViewBag.ProfileList;
+
+    string encodeString(string rawString)
+    {
+        byte[] bytes = System.Text.Encoding.UTF8.GetBytes(rawString);
+        string encodedString = Convert.ToBase64String(bytes);
+        return encodedString;
+    }
 }
 
-@if (email != null)
+@if (adminEmail != null)
 {
     <div>
         <h3> User Management </h3>
     </div>
+    <div class="table-users">
+        <table>
+            <thead>
+                <tr>
+                    <th><strong>Profile Email</strong></th>
+                    <th><strong>Name</strong></th>
+                    <th><strong>Address</strong></th>
+                    <th><strong>Phone</strong></th>
+                    <th><strong>Pass</strong></th>
+                    <th><strong>Profile Type</strong></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (Profile item in profiles)
+                {
+                    <tr>
+                        <td><a href="/Home/UserMenu?emailAd=@encodeString(adminEmail)&emailUser=@encodeString(item.email)">@item.email</a></td>
+                        <td>@item.name</td>
+                        <td>@item.address</td>
+                        <td>@item.phone</td>
+                        <td>@item.password</td>
+                        <td>@item.type</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <style>
+        .table-users {
+            width: 50%;
+            height: 90%;
+            margin: 0 auto;
+            overflow-x: auto;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
 }
 else
 {

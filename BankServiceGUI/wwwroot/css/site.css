@@ -1,5 +1,6 @@
 body {
     width: auto;
+    height: auto;
     font-family: sans-serif;
     margin-left: auto;
     margin-right: auto;
@@ -42,8 +43,8 @@ div#naviBar li a:hover{
 
 div#mainBody{
     background-color: lightgrey;
-    height: 600px;
-    resize: vertical; 
+    height: 1000px;
+    resize: vertical;
 }
 
 div#LoginForm{
@@ -88,8 +89,17 @@ div#profileBody{
 
 div#adminTitleDiv{
     place-content: center;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 h4#adminTitle{
     font-weight: bold;
+}
+
+div#UserMenuEdit {
+    width: 300px;
+    padding-top: 100px;
+    margin-left: auto;
+    margin-right: auto;
 }

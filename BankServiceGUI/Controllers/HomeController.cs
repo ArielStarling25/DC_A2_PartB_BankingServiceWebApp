@@ -132,7 +132,7 @@ namespace BankServiceGUI.Controllers
         }
 
         //Updating User Data
-        [HttpPut("profile/{email}")]
+        //[HttpPut("profile/{email}")]
         public async Task<IActionResult> putProfileData(string email, [FromBody] Profile data)
         {
             RestClient client = new RestClient(httpURL);
@@ -205,7 +205,7 @@ namespace BankServiceGUI.Controllers
         }
 
         //Updating Bank Data
-        [HttpPut("bank/{id}")]
+        //[HttpPut("bank/{id}")]
         public async Task<IActionResult> putBankData(int id, [FromBody] Bank bankData)
         {
             RestClient client = new RestClient(httpURL);
@@ -303,7 +303,7 @@ namespace BankServiceGUI.Controllers
         }
 
         //updates a specific transaction by id
-        [HttpPut("transaction/{id}")]
+        //[HttpPut("transaction/{id}")]
         public async Task<IActionResult> putTrans(int id, [FromBody] Transaction transData)
         {
             RestClient client = new RestClient(httpURL);
@@ -414,7 +414,7 @@ namespace BankServiceGUI.Controllers
                     List<Profile> profiles = null;
                     RestClient client2 = new RestClient(httpURL);
                     RestRequest req2 = new RestRequest("/api/bprofile/", Method.Get);
-                    RestResponse response2 = await client.GetAsync(req2);
+                    RestResponse response2 = await client2.GetAsync(req2);
                     if (response2.IsSuccessStatusCode)
                     {
                         if (adminProf.type.Equals("admin"))
@@ -439,6 +439,139 @@ namespace BankServiceGUI.Controllers
             {
                 return NotFound();
             }
+            return View();
+        }
+
+        public async Task<IActionResult> UserMenu(string emailAd, string emailUser)
+        {
+            if (emailUser == null)
+            {
+                return BadRequest();
+            }
+            else
+            {
+                RestClient client = new RestClient(httpURL);
+                RestRequest req = new RestRequest("/api/bprofile/" + decodeString(emailAd), Method.Get);
+                RestResponse response = await client.GetAsync(req);
+                if (response.IsSuccessStatusCode)
+                {
+                    Profile adminProf = JsonConvert.DeserializeObject<Profile>(response.Content);
+                    if (adminProf == null)
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        if (adminProf.type.Equals("admin"))
+                        {
+                            if (emailUser.Equals("")) //When creating a new profile
+                            {
+                                
+                            }
+                            else //when editing/deleting
+                            {
+                                string decodedEmail = decodeString(emailUser);
+                                Profile profile = null;
+                                RestClient client2 = new RestClient(httpURL);
+                                RestRequest req2 = new RestRequest("/api/bprofile/" + decodedEmail, Method.Get);
+                                RestResponse response2 = await client2.GetAsync(req2);
+                                if (response2.IsSuccessStatusCode)
+                                {
+                                    profile = JsonConvert.DeserializeObject<Profile>(response2.Content);
+                                    if (profile != null)
+                                    {
+                                        ViewBag.EditState = true;
+                                        ViewBag.ProfileUser = profile;
+                                        ViewBag.ProfileEmail = adminProf.email;
+                                        ViewBag.ProfileType = adminProf.type;
+                                    }
+                                    else
+                                    {
+                                        return NotFound();
+                                    }
+                                }
+                                else
+                                {
+                                    return NotFound();
+                                }
+                            }
+                        }
+                        else
+                        {
+                            ViewBag.ProfileEmail = null;
+                        }
+                    }
+                }
+                else
+                {
+                    return BadRequest();
+                }
+            }
+            return View();
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> UserMenu(string useremail, string username, string useraddr, string userphone, string userpass, string usertype)
+        {
+            ViewBag.UserMenuMsg = "";
+            RestClient client = new RestClient(httpURL);
+            RestRequest req = new RestRequest("/api/bprofile" , Method.Get);
+            RestResponse response = await client.GetAsync(req);
+            if (response.IsSuccessStatusCode)
+            {
+                List<Profile> profiles = JsonConvert.DeserializeObject<List<Profile>>(response.Content);
+                if(profiles == null)
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    if(profileExists(useremail, profiles, out Profile userProf))
+                    {
+                        userProf.name = username;
+                        userProf.address = useraddr;
+                        userProf.phone = userphone;
+                        userProf.password = userpass;
+                        userProf.type = usertype;
+
+                        RestClient client2 = new RestClient(httpURL);
+                        RestRequest req2 = new RestRequest("/api/bprofile/" + userProf.email, Method.Put);
+                        req.RequestFormat = RestSharp.DataFormat.Json;
+                        req.AddBody(userProf);
+                        RestResponse response2 = await client2.PutAsync(req2);
+                        if (response2.IsSuccessStatusCode)
+                        {
+                            ViewBag.ProfileEmail = "email";
+                            ViewBag.ProfileType = "admin";
+                            ViewBag.UserMenuMsg = "Successfully modified profile, Click Manage Users to return";
+                        }
+                        else
+                        {
+                            return NotFound();
+                        }
+                    }
+                    else 
+                    {
+                        return BadRequest();
+                    }
+                }
+            }
+            return View();
+        }
+
+        [HttpDelete]
+        public async Task<IActionResult> UserMenu(string useremail)
+        {
+            return View();
+        }
+
+        public async Task<IActionResult> TransManage(string email)
+        {
+            return View();
+        }
+
+        public async Task<IActionResult> Logs(string email)
+        {
             return View();
         }
 
