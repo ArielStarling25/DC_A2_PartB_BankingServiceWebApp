@@ -675,7 +675,7 @@ namespace BankServiceGUI.Controllers
         }
 
         //ISSUE: Why doesnt the 'submit' in UserMenu direct the data to this?
-        [HttpPut]
+        [HttpPut("updateuser")]
         public async Task<IActionResult> UserMenu(string adminemail, string useremail, string username, string useraddr, string userphone, string userpass, string usertype)
         {
             ViewBag.UserMenuMsg = "";
@@ -735,7 +735,7 @@ namespace BankServiceGUI.Controllers
         }
 
         // ISSUE: Not implemented until profile editing is functional
-        [HttpDelete]
+        [HttpDelete("deleteuser")]
         public async Task<IActionResult> UserMenu(string useremail)
         {
             return View();
