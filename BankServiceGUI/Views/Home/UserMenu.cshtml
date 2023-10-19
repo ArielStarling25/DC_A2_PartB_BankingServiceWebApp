@@ -27,7 +27,7 @@
         @if (profileUser != null)
         {
             <div id="UserMenuEdit">
-                <form action="/updateuser" method="put">
+                <form action="/updateuser" method="post">
                     <input id="adminEmail" type="hidden" name="adminemail" value=@email />
                     <input id="userEmail" type="text" name="useremail" placeholder="User Email" value=@profileUser.email />
                     <input id="userName" type="text" name="username" placeholder="User Name" value=@profileUser.name />
@@ -37,9 +37,10 @@
                     <input id="userType" type="text" name="usertype" placeholder="Profile Type" value=@profileUser.type />
                     <input type="submit" value="Submit">
                 </form>
-                <form action="/deleteuser" method="delete">
-                    <input id="adminEmail" type="hidden" name="adminemail" value=@profileUser.email />
+                <form action="/deleteuser" method="post">
+                    <input id="adminEmail" type="hidden" name="adminemail" value=@email />
                     <input id="userEmail" type="hidden" name="useremail" value=@profileUser.email />
+                    <input id="deleteConfirm" type="hidden" name="deleteconfirm" value=@profileUser.email />
                     <input type="submit" value="Delete Profile">
                 </form>
             </div>

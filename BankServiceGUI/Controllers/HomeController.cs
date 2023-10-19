@@ -675,7 +675,7 @@ namespace BankServiceGUI.Controllers
         }
 
         //ISSUE: Why doesnt the 'submit' in UserMenu direct the data to this?
-        [HttpPut("updateuser")]
+        [HttpPost("updateuser")]
         public async Task<IActionResult> UserMenu(string adminemail, string useremail, string username, string useraddr, string userphone, string userpass, string usertype)
         {
             ViewBag.UserMenuMsg = "";
@@ -702,15 +702,16 @@ namespace BankServiceGUI.Controllers
 
                         RestClient client2 = new RestClient(httpURL);
                         RestRequest req2 = new RestRequest("/api/bprofile/" + userProf.email, Method.Put);
-                        req.RequestFormat = RestSharp.DataFormat.Json;
-                        req.AddBody(userProf);
+                        req2.RequestFormat = RestSharp.DataFormat.Json;
+                        req2.AddBody(userProf);
                         RestResponse response2 = await client2.PutAsync(req2);
                         if (response2.IsSuccessStatusCode)
                         {
                             ViewBag.ProfileEmail = adminemail;
+                            ViewBag.EditState = true;
                             ViewBag.ProfileType = "admin";
-                            ViewBag.UserMenuMsg = "Successfully modified profile";
-                            LogClass.LogItem(adminemail,"Info", "Modded Profile"+userProf.email);
+                            ViewBag.UserMenuMsg = "Successfully modified profile: " + userProf.email;
+                            LogClass.LogItem(adminemail,"Info", "Modded Profile: "+userProf.email);
                             //return Ok(response2);
                         }
                         else
@@ -735,9 +736,58 @@ namespace BankServiceGUI.Controllers
         }
 
         // ISSUE: Not implemented until profile editing is functional
-        [HttpDelete("deleteuser")]
-        public async Task<IActionResult> UserMenu(string useremail)
+        [HttpPost("deleteuser")]
+        public async Task<IActionResult> UserMenu(string adminemail, string useremail, string deleteconfirm)
         {
+            ViewBag.UserMenuMsg = "";
+            RestClient client = new RestClient(httpURL);
+            RestRequest req = new RestRequest("/api/bprofile", Method.Get);
+            RestResponse response = await client.GetAsync(req);
+            if (response.IsSuccessStatusCode)
+            {
+                List<Profile> profiles = JsonConvert.DeserializeObject<List<Profile>>(response.Content);
+                if (profiles == null)
+                {
+                    LogClass.LogItem(adminemail, "Error", "profiles is null!");
+                    return NotFound();
+                }
+                else
+                {
+                    if (profileExists(useremail, profiles, out Profile userProf))
+                    {
+                        if (deleteconfirm.Equals(useremail))
+                        {
+                            RestClient client2 = new RestClient(httpURL);
+                            RestRequest req2 = new RestRequest("/api/bprofile/" + userProf.email, Method.Delete);
+                            RestResponse response2 = await client2.DeleteAsync(req2);
+                            if (response2.IsSuccessStatusCode)
+                            {
+                                ViewBag.ProfileEmail = adminemail;
+                                ViewBag.EditState = true;
+                                ViewBag.ProfileType = "admin";
+                                ViewBag.UserMenuMsg = "Successfully deleted profile: " + userProf.email;
+                                LogClass.LogItem(adminemail, "Info", "Deleted Profile: " + userProf.email);
+                                //return Ok(response2);
+                            }
+                            else
+                            {
+                                LogClass.LogItem(adminemail, "Error", "Failed PUT request for user");
+                                return NotFound();
+                            }
+                        }
+                    }
+                    else
+                    {
+                        LogClass.LogItem(adminemail, "Error", "Profile does not exist!");
+                        return BadRequest();
+                    }
+                }
+            }
+            else
+            {
+                LogClass.LogItem(adminemail, "Error", "Failed to retrieve users: " + response);
+                return NotFound();
+            }
             return View();
         }
 
