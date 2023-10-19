@@ -17,10 +17,8 @@ else{
             <p>@error</p>
         }
         <form action="/Home/" method="post">
-            <input id="Uemail" type="text" name="email" placeholder="User Email"/>
-            @Html.ValidationMessage("email")
-            <input id="Upass" type="password" name="password" placeholder="Password"/>
-            @Html.ValidationMessage("password")
+            <input id="Uemail" type="text" name="email" placeholder="User Email" required/>
+            <input id="Upass" type="password" name="password" placeholder="Password" required/>
             <input type="submit" value="Submit">
         </form>
     </div>

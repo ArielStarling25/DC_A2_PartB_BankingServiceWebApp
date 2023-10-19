@@ -10,6 +10,7 @@
         byte[] bytes = System.Text.Encoding.UTF8.GetBytes(email);
         encodedEmail = Convert.ToBase64String(bytes);
     }
+    string type = ViewBag.ProfileType;
 }
 
 @if(email != null){
@@ -20,11 +21,11 @@
                 <p>@error</p>
             }
             <form action="/transaction" method="post">
-                <input id="Uemail" type="hidden" name="email" placeholder="Email" value="@encodedEmail" />
-                <input id="Uacc" type="number" name="accountNumber" placeholder="From Account" />
-                <input id="Uacc" type="number" name="toAccountNumber" placeholder="To Account" />
-                <input id="Uamount" type="number" name="amount" placeholder="Amount" />
-                <input id="Udescription" type="text" name="description" placeholder="Description" />
+                <input id="Uemail" type="hidden" name="email" placeholder="Email" value="@encodedEmail" required />
+                <input id="Uacc" type="number" name="accountNumber" placeholder="From Account" required />
+                <input id="Uacc" type="number" name="toAccountNumber" placeholder="To Account" required />
+                <input id="Uamount" type="number" name="amount" placeholder="Amount" required />
+                <input id="Udescription" type="text" name="description" placeholder="Description" required />
                 <input type="submit" value="Submit">
             </form>
         </div>

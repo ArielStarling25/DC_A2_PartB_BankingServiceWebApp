@@ -395,6 +395,7 @@ namespace BankServiceGUI.Controllers
                 ViewBag.Error = response.Content;
             }
             ViewBag.ProfileEmail = decodedEmail;
+            ViewBag.ProfileType = "user";
             return View("Transaction");
         }
 
@@ -766,9 +767,10 @@ namespace BankServiceGUI.Controllers
             return View();
         }
 
-        public async Task<IActionResult> Transaction(string email)
+        public IActionResult Transaction(string email)
         {
             ViewBag.ProfileEmail = decodeString(email);
+            ViewBag.ProfileType = "user";
             return View();
         }
 
