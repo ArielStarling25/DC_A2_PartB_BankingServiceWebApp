@@ -22,22 +22,46 @@
             <h2 id="headerTitle"> Bank Data Web Service Web Application </h2>
         </div>
         <div id="naviBar">
-            @if(email != null)
+            @if(email != null && type != null)
             {
-                <ul>
-                    <li>
-                        <a href="/Home/Profile?email=@encodedEmail">Profile</a>
-                    </li>
-                    <li>
-                        <a href="/Home/AccountSummary?email=@encodedEmail">Account Summary</a>
-                    </li>
-                    <li>
-                        <a href="/Home/Transaction?email=@encodedEmail">Transaction</a>
-                    </li>
-                    <li>
-                        <a href="/Home/Index">Logout</a>
-                    </li>
-                </ul>
+                @if (!type.Equals("user")) // Admin
+                {
+                    <ul>
+                        <li>
+                            <a href="/Home/Profile?email=@encodedEmail">Profile</a>
+                        </li>
+                        <li>
+                            <a href="/Home/UserManage?email=@encodedEmail">Manage Users</a>
+                        </li>
+                        <li>
+                            <a href="/Home/TransManage?email=@encodedEmail">Manage Transactions</a>
+                        </li>
+                        <li>
+                            <a href="/Home/Logs?email=@encodedEmail">Security Logs</a>
+                        </li>
+                        <li>
+                            <a href="/Home/Index">Logout</a>
+                        </li>
+                    </ul>
+                }
+                else // User
+                {
+                    <ul>
+                        <li>
+                            <a href="/Home/Profile?email=@encodedEmail">Profile</a>
+                        </li>
+                        <li>
+                            <a href="/Home/AccountSummary?email=@encodedEmail">Account Summary</a>
+                        </li>
+                        <li>
+                            <a href="/Home/Transaction?email=@encodedEmail">Transaction</a>
+                        </li>
+                        <li>
+                            <a href="/Home/Index">Logout</a>
+                        </li>
+                    </ul>
+                }
+               
             }
             else
             {
