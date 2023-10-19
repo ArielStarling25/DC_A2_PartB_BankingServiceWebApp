@@ -2,6 +2,53 @@
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
+    string email = ViewBag.ProfileEmail;
+    string error = ViewBag.Error;
+    string encodedEmail = null;
+    if (email != null)
+    {
+        byte[] bytes = System.Text.Encoding.UTF8.GetBytes(email);
+        encodedEmail = Convert.ToBase64String(bytes);
+    }
 }
 
-HELLO
+@if(email != null){
+    <div class="container">
+        <div class="centered-form">
+            @if (error != null && error.Length > 0)
+            {
+                <p>@error</p>
+            }
+            <form action="/transaction" method="post">
+                <input id="Uemail" type="hidden" name="email" placeholder="Email" value="@encodedEmail" />
+                <input id="Uacc" type="number" name="accountNumber" placeholder="From Account" />
+                <input id="Uacc" type="number" name="toAccountNumber" placeholder="To Account" />
+                <input id="Uamount" type="number" name="amount" placeholder="Amount" />
+                <input id="Udescription" type="text" name="description" placeholder="Description" />
+                <input type="submit" value="Submit">
+            </form>
+        </div>
+    </div>
+}
+else{
+    <div>
+        <p>Please login first!</p>
+    </div>
+}
+
+<style>
+    .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+    }
+
+    .centered-form {
+        text-align: center;
+        background-color: #f0f0f0;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+</style>

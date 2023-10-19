@@ -62,23 +62,22 @@ namespace BankDataWebService.Controllers
           }
             if (!_context.Banks.Any(e => e.accountNumber == transaction.accountNumber)) 
             {
-                return NotFound("Account number not found.");
+                return NotFound("(From) Account number not found.");
             }
-            if (transaction.amount ==0)
+            if (!_context.Banks.Any(e => e.accountNumber == transaction.toAccountNumber))
             {
-                return Problem("Amount should not be zero!");
+                return NotFound("(To) Account number not found.");
             }
-            if (transaction.amount < 0)
+            if (transaction.amount <= 0)
             {
-                double nowAmmount = await _context.Banks.Where(a => a.accountNumber == transaction.accountNumber).Select(a => a.balance).FirstOrDefaultAsync();
-                if (nowAmmount < (transaction.amount*-1))
-                {
-                    return Problem("Account not enough balance!");
-                }
+                return Problem("Invalid amount!");
             }
             Bank bank = await _context.Banks.FindAsync(transaction.accountNumber);
-            bank.balance += transaction.amount;
+            Bank toBank = await _context.Banks.FindAsync(transaction.toAccountNumber);
+            bank.balance -= transaction.amount;
+            toBank.balance += transaction.amount;
             _context.Banks.Update(bank);
+            _context.Banks.Update(toBank);
             _context.Transaction.Add(transaction);
             await _context.SaveChangesAsync();
 

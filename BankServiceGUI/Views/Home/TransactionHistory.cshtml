@@ -6,6 +6,12 @@
     ViewData["Title"] = "Transactions History Page";
     List<Transaction> transactions = ViewBag.Transactions;
     string email = ViewBag.ProfileEmail;
+    string encodedEmail = null;
+    if (email != null)
+    {
+        byte[] bytes = System.Text.Encoding.UTF8.GetBytes(email);
+        encodedEmail = Convert.ToBase64String(bytes);
+    }
 }
 
 
@@ -15,6 +21,7 @@
         <table>
             <thead>
                 <tr>
+                    <th><strong>Transaction ID</strong></th>
                     <th><strong>From Account</strong></th>
                     <th><strong>To Account</strong></th>
                     <th><strong>Balance</strong></th>
@@ -25,6 +32,7 @@
                 @foreach (Transaction transaction in transactions)
                 {
                     <tr>
+                        <td>@transaction.Id</td>
                         <td>@transaction.accountNumber</td>
                         <td>@transaction.toAccountNumber</td>
                         <td>RM @transaction.amount</td>

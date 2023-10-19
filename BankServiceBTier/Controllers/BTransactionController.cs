@@ -110,7 +110,7 @@ namespace BankServiceBTier.Controllers
 
         // POST: api/btransaction
         [HttpPost]
-        public async Task<ActionResult<Transaction>> PostTrans([FromBody] Transaction transData)
+        public async Task<ActionResult<Transaction>> PostTrans(Transaction transData)
         {
             RestClient client = new RestClient(httpURL);
             RestRequest req = new RestRequest("/api/transactions", Method.Post);
@@ -119,11 +119,11 @@ namespace BankServiceBTier.Controllers
             RestResponse response = await client.PostAsync(req);
             if (response.IsSuccessStatusCode)
             {
-                return CreatedAtAction("PostTransaction", response.Content);
+                return CreatedAtAction("PostTransaction", "Transaction successfully made.");
             }
             else
             {
-                return BadRequest(response.Content);
+                return CreatedAtAction("FailTransaction", "Transaction failed.");
             }
         }
 

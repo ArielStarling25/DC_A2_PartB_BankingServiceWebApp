@@ -318,6 +318,81 @@ namespace BankServiceGUI.Controllers
             }
         }
 
+        [HttpPost("transaction")]
+        public async Task<IActionResult> postTrans()
+        {
+            string email = Request.Form["email"].ToString();
+            string decodedEmail = decodeString(email);
+            int accountNumber = int.Parse(Request.Form["accountNumber"].ToString());
+            int toAccountNumber = int.Parse(Request.Form["toAccountNumber"].ToString());
+            double amount = double.Parse(Request.Form["amount"].ToString());
+            string description = Request.Form["description"].ToString();
+            Transaction transaction = new Transaction();
+            transaction.accountNumber = accountNumber;
+            transaction.toAccountNumber = toAccountNumber;
+            transaction.amount = amount;
+            transaction.description = description;
+
+            List<Bank> banks = null;
+            Bank bankOwned = null;
+            RestClient client = new RestClient(httpURL);
+            RestRequest req = new RestRequest("/api/bbank/" + decodedEmail, Method.Get);
+            RestResponse response = await client.GetAsync(req);
+            if (response.IsSuccessStatusCode)
+            {
+                banks = JsonConvert.DeserializeObject<List<Bank>>(response.Content);
+                foreach (Bank bank in banks)
+                {
+                    if (bank.accountNumber == accountNumber)
+                    {
+                        bankOwned = bank;
+                        break;
+                    }
+                }
+                ViewBag.Error = banks.Count().ToString();
+                if (bankOwned != null)
+                {
+                    if (bankOwned.balance >= amount)
+                    {
+                        if (accountNumber != toAccountNumber)
+                        {
+                            client = new RestClient(httpURL);
+                            req = new RestRequest("/api/btransaction", Method.Post);
+                            req.RequestFormat = RestSharp.DataFormat.Json;
+                            req.AddBody(transaction);
+                            response = await client.PostAsync(req);
+                            if (response.IsSuccessStatusCode)
+                            {
+                                ViewBag.Error = response.Content;
+                            }
+                            else
+                            {
+                                ViewBag.Error = response.Content;
+                            }
+                        }
+                        else
+                        {
+                            ViewBag.Error = "Do not transfer to same account!";
+                        }
+                    }
+                    else
+                    {
+                        ViewBag.Error = "Account balance not enought!";
+                    }
+                }
+                else
+                {
+                    ViewBag.Error = "This is not your account!";
+                }
+            }
+            else
+            {
+                ViewBag.Error = response.Content;
+            }
+            ViewBag.ProfileEmail = decodedEmail;
+            return View("Transaction");
+        }
+
         private bool profileExists(string email, List<Profile> profiles, out Profile profile)
         {
             bool found = false;
@@ -402,6 +477,12 @@ namespace BankServiceGUI.Controllers
             {
                 return NotFound();
             }
+            return View();
+        }
+
+        public async Task<IActionResult> Transaction(string email)
+        {
+            ViewBag.ProfileEmail = decodeString(email);
             return View();
         }
 
