@@ -323,6 +323,65 @@ namespace BankServiceGUI.Controllers
             }
         }
 
+        [HttpPost("updateprofile/{email}")]
+        public async Task<IActionResult> updateProfile(string email)
+        { 
+            RestClient client = new RestClient(httpURL);
+            RestRequest req = new RestRequest("/api/bprofile/" + email, Method.Get);
+            RestResponse response = await client.GetAsync(req);
+            Profile oldProfile = JsonConvert.DeserializeObject<Profile>(response.Content);
+            string picture = oldProfile.picture;
+            string type = oldProfile.type;
+            string oldName = oldProfile.name;
+            string oldEmail = oldProfile.email;
+            string oldAddress = oldProfile.address;
+            string oldPhone = oldProfile.phone;
+            string oldPassword = oldProfile.password;
+
+            string newName = Request.Form["name"].ToString();
+            string newEmail = Request.Form["email"].ToString();
+            string newAddress = Request.Form["address"].ToString();
+            string newPhone = Request.Form["phone"].ToString();
+            string newPassword = Request.Form["password"].ToString();
+            Profile newProfile = new Profile();
+            newProfile.picture = picture;
+            newProfile.type = type;
+            newProfile.name = newName;
+            newProfile.email = newEmail;
+            newProfile.address = newAddress;
+            newProfile.phone = newPhone;
+            newProfile.password = newPassword;
+
+            client = new RestClient(httpURL);
+            req = new RestRequest("/api/bprofile/" + email, Method.Put);
+            req.RequestFormat = RestSharp.DataFormat.Json;
+            req.AddBody(newProfile);
+            response = await client.PutAsync(req);
+            if (response.IsSuccessStatusCode)
+            {
+                ViewBag.Alert = "Profile successfully updated!";
+                ViewBag.ProfileName = newName;
+                ViewBag.ProfileEmail = newEmail;
+                ViewBag.ProfileAddr = newAddress;
+                ViewBag.ProfilePhone = newPhone;
+                ViewBag.ProfilePassword = newPassword;
+                ViewBag.ProfilePicture = string.Format("data:image/png;base64,{0}", picture);
+                ViewBag.ProfileType = type;
+            }
+            else
+            {
+                ViewBag.Alert = "Profile failed to update!";
+                ViewBag.ProfileName = oldName;
+                ViewBag.ProfileEmail = oldEmail;
+                ViewBag.ProfileAddr = oldAddress;
+                ViewBag.ProfilePhone = oldPhone;
+                ViewBag.ProfilePassword = oldPassword;
+                ViewBag.ProfilePicture = string.Format("data:image/png;base64,{0}", picture);
+                ViewBag.ProfileType = type;
+            }
+            return View("Profile");
+        }
+
         [HttpPost("transaction")]
         public async Task<IActionResult> postTrans()
         {

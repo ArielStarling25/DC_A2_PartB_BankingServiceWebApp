@@ -3,6 +3,7 @@
 *@
 @{
     ViewData["Title"] = "Profile Page";
+    string alert = ViewBag.Alert;
     string name = ViewBag.ProfileName;
     string email = ViewBag.ProfileEmail;
     string address = ViewBag.ProfileAddr;
@@ -10,6 +11,12 @@
     string password = ViewBag.ProfilePassword;
     string picture = ViewBag.ProfilePicture;
     string profType = ViewBag.ProfileType;
+    string encodedEmail = null;
+    if (email != null)
+    {
+        byte[] bytes = System.Text.Encoding.UTF8.GetBytes(email);
+        encodedEmail = Convert.ToBase64String(bytes);
+    }
 }
 
 @if(email != null)
@@ -21,38 +28,86 @@
                 <h4 id="adminTitle"> -- Admin -- </h4>
             </div>
         }
+        else
+        {
+            <form action="/updateprofile/@encodedEmail" method="post">
+                <div class="profile-data">
+                    <div class="picture-container">
+                        <p><img alt="" src="@picture" style="height: 100px;" /></p>
+                    </div>
+                    <hr />
+                        <p><strong> Name: </strong><input id="Uname" type="text" name="name" placeholder="Name" value="@name" required /></p>
+                    <hr />
+                        <p><strong> Email: </strong><input id="Uemail" type="text" name="email" placeholder="Email" value="@email" required /></p>
+                    <hr />
+                        <p><strong> Address: </strong><input id="Uaddress" type="text" name="address" placeholder="Address" value="@address" required /></p>
+                    <hr />
+                        <p><strong> Phone Number: </strong><input id="Uphone" type="text" name="phone" placeholder="Phone" value="@phone" required /></p>
+                    <hr />
+                        <p><strong> Password: </strong><input id="Upassword" type="text" name="password" placeholder="Password" value="@password" required /></p>
 
-        <div class="center-image">
-            <p><img alt="" src="@picture" style="height: 120px;" /></p>
-        </div>
+                    <input id="Upicture" type="hidden" name="picture" placeholder="Picture" value="@picture" required />
+                    <input id="Utype" type="hidden" name="type" placeholder="Type" value="@profType" required />
+                </div>
 
-        <style>
-            .center-image {
-                text-align: center;
-            }
-
-                .center-image img {
-                    display: inline-block;
-                }
-        </style>
-
-        <hr />
-        <p><strong> Name: </strong>@name</p>
-
-        <hr />
-        <p><strong> Email: </strong>@email</p>
-
-        <hr />
-        <p><strong> Address: </strong>@address</p>
-
-        <hr />
-        <p><strong> Phone Number: </strong>@phone</p>
-
-        <hr />
-        <p><strong> Password: </strong>@password</p>
+                <div class="submit-container">
+                    <input type="submit" value="Update Profile">
+                    @if (alert!=null)
+                    {
+                        <p>@alert</p>
+                    }
+                </div>
+            </form>
+        }
     </div>
 }
 else
 {
     <p> Please login first!</p>
 }
+
+<style>
+    .profile-data {
+        text-align: center;
+        display: inline-block;
+        width: 100%;
+        height: 330px;
+        text-align: left;
+        overflow-x: auto;
+        border: 1px solid #ccc;
+        padding: 10px;
+    }
+
+    #Uname {
+        width: 600px;
+    }
+
+    #Uemail {
+        width: 600px;
+    }
+
+    #Uaddress {
+        width: 600px;
+    }
+
+    #Uphone {
+        width: 600px;
+    }
+
+    #Upassword {
+        width: 600px;
+    }
+
+    .picture-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .submit-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 50px;
+    }
+</style>
