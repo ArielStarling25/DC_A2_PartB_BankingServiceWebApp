@@ -40,8 +40,8 @@
         private string GetProfType()
         {
             string chosenString = "";
-            int chosenNum = random.Next(1,31); // chooses a number 1 to 30
-            if(chosenNum == 15) // 1 in 30 are admin profiles
+            int chosenNum = random.Next(1,21); // chooses a number 1 to 20
+            if(chosenNum == 15) // 1 in 20 are admin profiles
             {
                 chosenString = "admin";
             }

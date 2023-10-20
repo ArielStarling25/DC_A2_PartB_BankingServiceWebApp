@@ -71,7 +71,7 @@ namespace BankServiceBTier.Controllers
 
         // POST: api/bprofile
         [HttpPost]
-        public async Task<ActionResult<Profile>> PostProfile([FromBody] Profile profileData)
+        public async Task<IActionResult> PostProfile( [FromBody] Profile profileData)
         {
             RestClient client = new RestClient(httpURL);
             RestRequest req = new RestRequest("/api/profiles", Method.Post);

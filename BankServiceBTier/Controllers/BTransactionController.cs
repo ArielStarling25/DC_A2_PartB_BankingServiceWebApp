@@ -32,7 +32,7 @@ namespace BankServiceBTier.Controllers
             }
         }
 
-        // GET: api/btransaction/accno/5
+        // GET: api/btransaction/5
         [HttpGet("{accountNumber}")]
         public async Task<ActionResult<Transaction>> GetTransactions(int accountNumber)
         {
