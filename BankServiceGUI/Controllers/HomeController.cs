@@ -974,6 +974,105 @@ namespace BankServiceGUI.Controllers
         [HttpPost("sorttrans")]
         public async Task<IActionResult> TransManage(string adminemail, string sorttype, string sortNum)
         {
+            List<Transaction> transactions = null;
+            RestClient client = new RestClient(httpURL);
+            RestRequest req = new RestRequest("/api/btransaction", Method.Get);
+            RestResponse response = await client.GetAsync(req);
+            if (response.IsSuccessStatusCode)
+            {
+                transactions = JsonConvert.DeserializeObject<List<Transaction>>(response.Content);
+                if (transactions != null)
+                {
+                    transactions.Sort();
+                    if (sorttype.Equals("id-ascending"))
+                    {
+                        
+                    }
+                    else if (sorttype.Equals("id-descending"))
+                    {
+                        
+                    }
+                    else if (sorttype.Equals("fromacc-ascending"))
+                    {
+
+                    }
+                    else if (sorttype.Equals("fromacc-decending"))
+                    {
+
+                    }
+                    else if (sorttype.Equals("acc-byacc"))
+                    {
+
+                    }
+                    else if (sorttype.Equals("toacc-ascending"))
+                    {
+
+                    }
+                    else if (sorttype.Equals("toacc-decending"))
+                    {
+
+                    }
+                    else if (sorttype.Equals("amount-ascending"))
+                    {
+
+                    }
+                    else if (sorttype.Equals("amount-decending"))
+                    {
+
+                    }
+                    else
+                    {
+                        LogClass.LogItem(adminemail, "Warning", "Invalid sort query");
+                    }
+                }
+            }
+            else
+            {
+                LogClass.LogItem(adminemail, "Error", "Failed to retrieve transactions: " + response);
+                return NotFound();
+            }
+            return View();
+        }
+
+        private List<Transaction> sortTranList(string type, string byWhat)
+        {
+            if (byWhat.Equals("id"))
+            {
+                if (type.Equals("ascend"))
+                {
+
+                }
+                else if (type.Equals("decend"))
+                {
+
+                }
+            }
+            else if (byWhat.Equals("fromAccount"))
+            {
+                if (type.Equals("ascend"))
+                {
+
+                }
+                else if (type.Equals("decend"))
+                {
+
+                }
+            }
+            else if (byWhat.Equals("toAcc"))
+            {
+                if (type.Equals("ascend"))
+                {
+
+                }
+                else if (type.Equals("decend"))
+                {
+
+                }
+            }
+        }
+
+        private List<Transaction> sortTranList(string byAcc)
+        {
 
         }
 
