@@ -26,34 +26,56 @@
     {
         @if (profileUser != null)
         {
-            <div id="UserMenuEdit">
-                <form action="/updateuser" method="post">
-                    <input id="adminEmail" type="hidden" name="adminemail" value=@email />
-                    <input id="userEmail" type="text" name="useremail" placeholder="User Email" value=@profileUser.email />
-                    <input id="userName" type="text" name="username" placeholder="User Name" value=@profileUser.name />
-                    <input id="userAddr" type="text" name="useraddr" placeholder="User Addr" value=@removeSpaces(profileUser.address) />
-                    <input id="userPhone" type="text" name="userphone" placeholder="User Phone" value=@profileUser.phone />
-                    <input id="userPass" type="text" name="userpass" placeholder="Password" value=@profileUser.password />
-                    <input id="userType" type="text" name="usertype" placeholder="Profile Type" value=@profileUser.type />
-                    <input type="submit" value="Submit">
-                </form>
-                <form action="/deleteuser" method="post">
-                    <input id="adminEmail" type="hidden" name="adminemail" value=@email />
-                    <input id="userEmail" type="hidden" name="useremail" value=@profileUser.email />
-                    <input id="deleteConfirm" type="hidden" name="deleteconfirm" value=@profileUser.email />
-                    <input type="submit" value="Delete Profile">
-                </form>
-            </div>
-        }
-        else
-        {
-
+            @if (!profileUser.email.Equals("new"))
+            {
+                <div id="UserMenuEdit">
+                    <form action="/updateuser" method="post">
+                        <input id="adminEmail" type="hidden" name="adminemail" value=@email />
+                        <input id="userEmail" type="text" name="useremail" placeholder="User Email" value=@profileUser.email required />
+                        <input id="userName" type="text" name="username" placeholder="User Name" value=@profileUser.name required />
+                        <input id="userAddr" type="text" name="useraddr" placeholder="User Addr" value=@removeSpaces(profileUser.address) />
+                        <input id="userPhone" type="text" name="userphone" placeholder="User Phone" value=@profileUser.phone />
+                        <input id="userPass" type="text" name="userpass" placeholder="Password" value=@profileUser.password required />
+                        <input id="userType" type="text" name="usertype" placeholder="Profile Type" value=@profileUser.type required />
+                        <input type="submit" value="Update Profile">
+                    </form>
+                    <form action="/deleteuser" method="post">
+                        <input id="adminEmail" type="hidden" name="adminemail" value=@email />
+                        <input id="userEmail" type="hidden" name="useremail" value=@profileUser.email />
+                        <input id="deleteConfirm" type="hidden" name="deleteconfirm" value=@profileUser.email />
+                        <input type="submit" value="Delete Profile">
+                    </form>
+                </div>
+            }
+            else
+            {
+                <div id="UserMenuNew">
+                    <form action="/postuser" method="post">
+                        <input id="adminEmail" type="hidden" name="adminemail" value=@email />
+                        <input id="userEmail" type="text" name="useremail" placeholder="User Email" required />
+                        <input id="userName" type="text" name="username" placeholder="User Name" required />
+                        <input id="userAddr" type="text" name="useraddr" placeholder="User Addr" />
+                        <input id="userPhone" type="text" name="userphone" placeholder="User Phone" />
+                        <input id="userPass" type="text" name="userpass" placeholder="Password" required />
+                        <input id="userType" type="text" name="usertype" placeholder="Profile Type" value="user" required />
+                        <input id="confirmQuery" type="hidden" name="confirm" value=@email />
+                        <input type="submit" value="Post Profile">
+                    </form>
+                </div>
+            }
         }
         <p>@message</p>
     }
 
     <style>
         div#UserMenuEdit{
+            width: 300px;
+            padding-top: 10px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        div#UserMenuNew{
             width: 300px;
             padding-top: 10px;
             margin-left: auto;

@@ -29,9 +29,12 @@
             </div>
             <form action="/updateprofile/@encodedEmail" method="post">
                 <div class="profile-data">
-                    <div class="picture-container">
-                        <p><img alt="" src="@picture" style="height: 100px;" /></p>
-                    </div>
+                    @if (!String.IsNullOrEmpty(picture))
+                    {
+                        <div class="picture-container">
+                            <p><img alt="" src="@picture" style="height: 100px;" /></p>
+                        </div>
+                    }
                     <hr />
                         <p><strong> Name: </strong><input id="Uname" type="text" name="name" placeholder="Name" value="@name" required /></p>
                     <hr />
@@ -60,9 +63,12 @@
         {
             <form action="/updateprofile/@encodedEmail" method="post">
                 <div class="profile-data">
-                    <div class="picture-container">
-                        <p><img alt="" src="@picture" style="height: 100px;" /></p>
-                    </div>
+                    @if (!String.IsNullOrEmpty(picture))
+                    {
+                        <div class="picture-container">
+                            <p><img alt="" src="@picture" style="height: 100px;" /></p>
+                        </div>
+                    }
                     <hr />
                         <p><strong> Name: </strong><input id="Uname" type="text" name="name" placeholder="Name" value="@name" required /></p>
                     <hr />

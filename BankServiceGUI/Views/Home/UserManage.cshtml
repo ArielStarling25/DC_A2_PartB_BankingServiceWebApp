@@ -20,6 +20,9 @@
     <div>
         <h3> User Management </h3>
     </div>
+    <div class="link-createnew">
+        <h5><a href="/Home/UserMenu?emailAd=@encodeString(adminEmail)&emailUser=@encodeString("new")">Create new Profile</a></h5>
+    </div>
     <div class="table-users">
         <table>
             <thead>
@@ -50,10 +53,14 @@
 
     <style>
         .table-users {
-            width: 50%;
-            height: 90%;
+            width: 70%;
+            height: 80%;
             margin: 0 auto;
             overflow-x: auto;
+        }
+
+        .link-createnew {
+            margin: 0 auto;
         }
 
         table {

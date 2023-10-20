@@ -111,12 +111,12 @@ namespace BankServiceGUI.Controllers
             {
                 profile = JsonConvert.DeserializeObject<Profile>(response.Content);
                 if (profile == null)
-                { 
+                {
                     return NotFound();
                 }
                 else
                 {
-                    ViewBag.ProfileName = profile.name;;
+                    ViewBag.ProfileName = profile.name; ;
                     ViewBag.ProfilePhone = profile.phone;
                     ViewBag.ProfileEmail = profile.email;
                     ViewBag.ProfileAddr = profile.address;
@@ -226,7 +226,7 @@ namespace BankServiceGUI.Controllers
         }
 
         //Transaction Controllers
-        
+
         //Returns all transaction data
         [HttpGet("transaction")]
         public async Task<IActionResult> getTrans()
@@ -325,7 +325,7 @@ namespace BankServiceGUI.Controllers
 
         [HttpPost("updateprofile/{email}")]
         public async Task<IActionResult> updateProfile(string email)
-        { 
+        {
             RestClient client = new RestClient(httpURL);
             RestRequest req = new RestRequest("/api/bprofile/" + email, Method.Get);
             RestResponse response = await client.GetAsync(req);
@@ -462,7 +462,7 @@ namespace BankServiceGUI.Controllers
         {
             bool found = false;
             profile = null;
-            foreach(Profile prof in profiles)
+            foreach (Profile prof in profiles)
             {
                 if (email.Equals(prof.email))
                 {
@@ -496,7 +496,14 @@ namespace BankServiceGUI.Controllers
                     ViewBag.ProfileAddr = profile.address;
                     ViewBag.ProfilePassword = profile.password;
                     ViewBag.ProfileType = profile.type;
-                    ViewBag.ProfilePicture = string.Format("data:image/png;base64,{0}", profile.picture);
+                    if (!String.IsNullOrEmpty(profile.picture))
+                    {
+                        ViewBag.ProfilePicture = string.Format("data:image/png;base64,{0}", profile.picture);
+                    }
+                    else
+                    {
+                        ViewBag.ProfilePicture = "";
+                    }
                 }
             }
             else
@@ -506,7 +513,7 @@ namespace BankServiceGUI.Controllers
             return View();
         }
 
-        public async Task <IActionResult> AccountSummary(string email)
+        public async Task<IActionResult> AccountSummary(string email)
         {
             string decodedEmail = decodeString(email);
             List<Bank> banks = null;
@@ -559,7 +566,7 @@ namespace BankServiceGUI.Controllers
                 Profile adminProf = JsonConvert.DeserializeObject<Profile>(response.Content);
                 if (adminProf == null)
                 {
-                    LogClass.LogItem(decodedEmail,"Error","Admin account does not exist!");
+                    LogClass.LogItem(decodedEmail, "Error", "Admin account does not exist!");
                     return NotFound();
                 }
                 else
@@ -576,7 +583,7 @@ namespace BankServiceGUI.Controllers
                             ViewBag.ProfileList = profiles;
                             ViewBag.ProfileEmail = decodedEmail;
                             ViewBag.ProfileType = adminProf.type;
-                            LogClass.LogItem(decodedEmail,"Info", "Account list access");
+                            LogClass.LogItem(decodedEmail, "Info", "Account list access");
                         }
                         else
                         {
@@ -586,7 +593,7 @@ namespace BankServiceGUI.Controllers
                     }
                     else
                     {
-                        LogClass.LogItem(decodedEmail,"Error", "Failed to retrive list: " + response2);
+                        LogClass.LogItem(decodedEmail, "Error", "Failed to retrive list: " + response2);
                         return NotFound();
                     }
                 }
@@ -603,7 +610,7 @@ namespace BankServiceGUI.Controllers
         {
             if (emailUser == null)
             {
-                LogClass.LogItem(decodeString(emailAd),"Error", "emailUser is null");
+                LogClass.LogItem(decodeString(emailAd), "Error", "emailUser is null");
                 return BadRequest();
             }
             else
@@ -616,16 +623,21 @@ namespace BankServiceGUI.Controllers
                     Profile adminProf = JsonConvert.DeserializeObject<Profile>(response.Content);
                     if (adminProf == null)
                     {
-                        LogClass.LogItem(decodeString(emailAd),"Error", "Admin account does not exist!");
+                        LogClass.LogItem(decodeString(emailAd), "Error", "Admin account does not exist!");
                         return NotFound();
                     }
                     else
                     {
                         if (adminProf.type.Equals("admin"))
                         {
-                            if (emailUser.Equals("")) //When creating a new profile
+                            if (decodeString(emailUser).Equals("new")) //When creating a new profile
                             {
-                                
+                                ViewBag.EditState = true;
+                                Profile newProf = new Profile();
+                                newProf.email = "new";
+                                ViewBag.ProfileUser = newProf;
+                                ViewBag.ProfileEmail = adminProf.email;
+                                ViewBag.ProfileType = adminProf.type;
                             }
                             else //when editing/deleting
                             {
@@ -643,99 +655,185 @@ namespace BankServiceGUI.Controllers
                                         ViewBag.ProfileUser = profile;
                                         ViewBag.ProfileEmail = adminProf.email;
                                         ViewBag.ProfileType = adminProf.type;
-                                        LogClass.LogItem(decodeString(emailAd),"Info", "Editing: " + profile.email);
+                                        LogClass.LogItem(decodeString(emailAd), "Info", "Editing: " + profile.email);
                                     }
                                     else
                                     {
-                                        LogClass.LogItem(decodeString(emailAd),"Error", "profile does not exist!");
+                                        LogClass.LogItem(decodeString(emailAd), "Error", "profile does not exist!");
                                         return NotFound();
                                     }
                                 }
                                 else
                                 {
-                                    LogClass.LogItem(decodeString(emailAd),"Error", "Failed to retrieve user: "+response2);
+                                    LogClass.LogItem(decodeString(emailAd), "Error", "Failed to retrieve user: " + response2);
                                     return NotFound();
                                 }
                             }
                         }
                         else
                         {
-                            LogClass.LogItem(decodeString(emailAd),"Error", "Invalid Access");
+                            LogClass.LogItem(decodeString(emailAd), "Error", "Invalid Access");
                             ViewBag.ProfileEmail = null;
                         }
                     }
                 }
                 else
                 {
-                    LogClass.LogItem(decodeString(emailAd),"Error", "Failed to retrieve admin: " + response);
+                    LogClass.LogItem(decodeString(emailAd), "Error", "Failed to retrieve admin: " + response);
                     return BadRequest();
                 }
             }
             return View();
         }
 
-        //ISSUE: Why doesnt the 'submit' in UserMenu direct the data to this?
         [HttpPost("updateuser")]
         public async Task<IActionResult> UserMenu(string adminemail, string useremail, string username, string useraddr, string userphone, string userpass, string usertype)
         {
             ViewBag.UserMenuMsg = "";
             RestClient client = new RestClient(httpURL);
-            RestRequest req = new RestRequest("/api/bprofile" , Method.Get);
+            RestRequest req = new RestRequest("/api/bprofile", Method.Get);
             RestResponse response = await client.GetAsync(req);
             if (response.IsSuccessStatusCode)
             {
                 List<Profile> profiles = JsonConvert.DeserializeObject<List<Profile>>(response.Content);
-                if(profiles == null)
+                if (profiles == null)
                 {
                     LogClass.LogItem(adminemail, "Error", "profiles is null!");
                     return NotFound();
                 }
                 else
                 {
-                    if(profileExists(useremail, profiles, out Profile userProf))
+                    if (profileExists(useremail, profiles, out Profile userProf))
                     {
-                        userProf.name = username;
-                        userProf.address = useraddr;
-                        userProf.phone = userphone;
-                        userProf.password = userpass;
-                        userProf.type = usertype;
-
-                        RestClient client2 = new RestClient(httpURL);
-                        RestRequest req2 = new RestRequest("/api/bprofile/" + userProf.email, Method.Put);
-                        req2.RequestFormat = RestSharp.DataFormat.Json;
-                        req2.AddBody(userProf);
-                        RestResponse response2 = await client2.PutAsync(req2);
-                        if (response2.IsSuccessStatusCode)
+                        if (verifyAdmin(adminemail))
                         {
-                            ViewBag.ProfileEmail = adminemail;
-                            ViewBag.EditState = true;
-                            ViewBag.ProfileType = "admin";
-                            ViewBag.UserMenuMsg = "Successfully modified profile: " + userProf.email;
-                            LogClass.LogItem(adminemail,"Info", "Modded Profile: "+userProf.email);
-                            //return Ok(response2);
+                            userProf.name = username;
+                            userProf.address = useraddr;
+                            userProf.phone = userphone;
+                            userProf.password = userpass;
+                            userProf.type = usertype;
+
+                            RestClient client2 = new RestClient(httpURL);
+                            RestRequest req2 = new RestRequest("/api/bprofile/" + userProf.email, Method.Put);
+                            req2.RequestFormat = RestSharp.DataFormat.Json;
+                            req2.AddBody(userProf);
+                            RestResponse response2 = await client2.PutAsync(req2);
+                            if (response2.IsSuccessStatusCode)
+                            {
+                                ViewBag.ProfileEmail = adminemail;
+                                ViewBag.EditState = true;
+                                ViewBag.ProfileType = "admin";
+                                ViewBag.UserMenuMsg = "Successfully modified profile: " + userProf.email;
+                                LogClass.LogItem(adminemail, "Info", "Modded Profile: " + userProf.email);
+                            }
+                            else
+                            {
+                                LogClass.LogItem(adminemail, "Error", "Failed PUT request for user");
+                                return NotFound();
+                            }
                         }
                         else
                         {
-                            LogClass.LogItem(adminemail,"Error", "Failed PUT request for user");
-                            return NotFound();
+                            LogClass.LogItem(adminemail, "Warning", "Unauthorised access");
+                            return BadRequest();
                         }
                     }
-                    else 
+                    else
                     {
-                        LogClass.LogItem(adminemail,"Error", "Profile does not exist!");
+                        LogClass.LogItem(adminemail, "Error", "Profile does not exist!");
                         return BadRequest();
                     }
                 }
             }
             else
             {
-                LogClass.LogItem(adminemail,"Error", "Failed to retrieve users: " + response);
+                LogClass.LogItem(adminemail, "Error", "Failed to retrieve users: " + response);
                 return NotFound();
             }
             return View();
         }
 
-        // ISSUE: Not implemented until profile editing is functional
+        [HttpPost("postuser")]
+        public async Task<IActionResult> UserMenu(string adminemail, string useremail, string username, string useraddr, string userphone, string userpass, string usertype, string confirm)
+        {
+            ViewBag.UserMenuMsg = "";
+            RestClient client = new RestClient(httpURL);
+            RestRequest req = new RestRequest("/api/bprofile", Method.Get);
+            RestResponse response = await client.GetAsync(req);
+            if (response.IsSuccessStatusCode)
+            {
+                List<Profile> profiles = JsonConvert.DeserializeObject<List<Profile>>(response.Content);
+                if (profiles == null)
+                {
+                    LogClass.LogItem(adminemail, "Error", "profiles is null!");
+                    return NotFound();
+                }
+                else
+                {
+                    if (profileExists(useremail, profiles, out Profile userProf))
+                    {
+                        LogClass.LogItem(adminemail, "Error", "Profile exists!");
+                        return BadRequest();
+                    }
+                    else
+                    {
+                        if (verifyAdmin(adminemail))
+                        {
+                            if (confirm.Equals(adminemail))
+                            {
+                                userProf = new Profile();
+                                userProf.email = useremail;
+                                userProf.name = username;
+                                userProf.address = useraddr;
+                                userProf.phone = userphone;
+                                userProf.picture = "";
+                                userProf.password = userpass;
+                                userProf.type = usertype;
+
+                                RestClient client2 = new RestClient(httpURL);
+                                RestRequest req2 = new RestRequest("/api/bprofile", Method.Post);
+                                req2.RequestFormat = RestSharp.DataFormat.Json;
+                                req2.AddBody(userProf);
+                                RestResponse response2 = await client2.PostAsync(req2);
+                                if (response2.IsSuccessStatusCode)
+                                {
+                                    ViewBag.ProfileEmail = adminemail;
+                                    ViewBag.EditState = true;
+                                    ViewBag.ProfileType = "admin";
+                                    ViewBag.UserMenuMsg = "Successfully added profile: " + userProf.email;
+                                    LogClass.LogItem(adminemail, "Info", "Added Profile: " + userProf.email);
+                                }
+                                else
+                                {
+                                    LogClass.LogItem(adminemail, "Error", "Failed POST request for user");
+                                    return NotFound();
+                                }
+                            }
+                            else
+                            {
+                                ViewBag.ProfileEmail = adminemail;
+                                ViewBag.EditState = true;
+                                ViewBag.ProfileType = "admin";
+                                ViewBag.UserMenuMsg = "Cancelled adding profile: " + userProf.email;
+                                LogClass.LogItem(adminemail, "Info", "Cancelled adding new profile: " + userProf.email);
+                            }
+                        }
+                        else
+                        {
+                            LogClass.LogItem(adminemail, "Warning", "Unauthorised access");
+                            return BadRequest();
+                        }
+                    }
+                }
+            }
+            else
+            {
+                LogClass.LogItem(adminemail, "Error", "Failed to retrieve users: " + response);
+                return NotFound();
+            }
+            return View();
+        }
+
         [HttpPost("deleteuser")]
         public async Task<IActionResult> UserMenu(string adminemail, string useremail, string deleteconfirm)
         {
@@ -755,25 +853,32 @@ namespace BankServiceGUI.Controllers
                 {
                     if (profileExists(useremail, profiles, out Profile userProf))
                     {
-                        if (deleteconfirm.Equals(useremail))
+                        if (verifyAdmin(adminemail))
                         {
-                            RestClient client2 = new RestClient(httpURL);
-                            RestRequest req2 = new RestRequest("/api/bprofile/" + userProf.email, Method.Delete);
-                            RestResponse response2 = await client2.DeleteAsync(req2);
-                            if (response2.IsSuccessStatusCode)
+                            if (deleteconfirm.Equals(useremail))
                             {
-                                ViewBag.ProfileEmail = adminemail;
-                                ViewBag.EditState = true;
-                                ViewBag.ProfileType = "admin";
-                                ViewBag.UserMenuMsg = "Successfully deleted profile: " + userProf.email;
-                                LogClass.LogItem(adminemail, "Info", "Deleted Profile: " + userProf.email);
-                                //return Ok(response2);
+                                RestClient client2 = new RestClient(httpURL);
+                                RestRequest req2 = new RestRequest("/api/bprofile/" + userProf.email, Method.Delete);
+                                RestResponse response2 = await client2.DeleteAsync(req2);
+                                if (response2.IsSuccessStatusCode)
+                                {
+                                    ViewBag.ProfileEmail = adminemail;
+                                    ViewBag.EditState = true;
+                                    ViewBag.ProfileType = "admin";
+                                    ViewBag.UserMenuMsg = "Successfully deleted profile: " + userProf.email;
+                                    LogClass.LogItem(adminemail, "Info", "Deleted Profile: " + userProf.email);
+                                }
+                                else
+                                {
+                                    LogClass.LogItem(adminemail, "Error", "Failed PUT request for user");
+                                    return NotFound();
+                                }
                             }
-                            else
-                            {
-                                LogClass.LogItem(adminemail, "Error", "Failed PUT request for user");
-                                return NotFound();
-                            }
+                        }
+                        else
+                        {
+                            LogClass.LogItem(adminemail, "Warning", "Unauthorised access");
+                            return BadRequest();
                         }
                     }
                     else
@@ -791,6 +896,27 @@ namespace BankServiceGUI.Controllers
             return View();
         }
 
+        private bool verifyAdmin(string adminEmail)
+        {
+            bool verified = false;
+            RestClient client = new RestClient(httpURL);
+            RestRequest req = new RestRequest("/api/bprofile/" + adminEmail, Method.Get);
+            RestResponse response = client.Get(req);
+            if (response.IsSuccessStatusCode)
+            {
+                Profile adminProf = JsonConvert.DeserializeObject<Profile>(response.Content);
+                if (adminProf != null)
+                {
+                    if (adminProf.type.Equals("admin"))
+                    {
+                        verified = true;
+                    }
+                }
+            }
+
+            return verified;
+        }
+
         // ISSUE: Only displays the transactions as is
         public async Task<IActionResult> TransManage(string email)
         {
@@ -803,7 +929,7 @@ namespace BankServiceGUI.Controllers
                 Profile adminProf = JsonConvert.DeserializeObject<Profile>(response.Content);
                 if (adminProf == null)
                 {
-                    LogClass.LogItem(decodedEmail,"Error", "admin does not exist!");
+                    LogClass.LogItem(decodedEmail, "Error", "admin does not exist!");
                     return NotFound();
                 }
                 else
@@ -820,7 +946,9 @@ namespace BankServiceGUI.Controllers
                             ViewBag.TransactionList = transactions;
                             ViewBag.ProfileEmail = decodedEmail;
                             ViewBag.ProfileType = adminProf.type;
-                            LogClass.LogItem(decodedEmail,"Info", "Retrieved Transactions data");
+                            ViewBag.SortByAcc = false;
+                            ViewBag.SortByAccNum = 0;
+                            LogClass.LogItem(decodedEmail, "Info", "Retrieved Transactions data");
                         }
                         else
                         {
@@ -830,7 +958,7 @@ namespace BankServiceGUI.Controllers
                     }
                     else
                     {
-                        LogClass.LogItem(decodedEmail,"Error", "Failed to retrieve transactions: " + response2);
+                        LogClass.LogItem(decodedEmail, "Error", "Failed to retrieve transactions: " + response2);
                         return NotFound();
                     }
                 }
@@ -841,6 +969,12 @@ namespace BankServiceGUI.Controllers
                 return NotFound();
             }
             return View();
+        }
+
+        [HttpPost("sorttrans")]
+        public async Task<IActionResult> TransManage(string adminemail, string sorttype, string sortNum)
+        {
+
         }
 
         public async Task<IActionResult> Logs(string email)
