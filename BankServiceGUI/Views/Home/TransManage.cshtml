@@ -22,7 +22,6 @@
     <div>
         <h3> Transaction Management </h3>
     </div>
-    <div class="transactionManage-container">
         <div class="table-transactions">
             <table>
                 <thead>
@@ -72,21 +71,16 @@
                     <input id="admin" type="hidden" name="adminemail" value=@email />
                     <input id="sortBy" type="hidden" name="sorttype" value="acc-byacc" />
                     <input id="accNo" type="text" name="sortNum" placeholder="Sort By Account" required />
+                    <input type="submit" value="Filter By Account">
                 </form>
             }
         </div>
-    </div>
 
     <style>
-        .transactionsManage {
-            position: fixed;
-            margin: 0 auto;
-        }
-
         .table-transactions {
             width: 50%;
             height: 90%;
-            margin: 0 auto;
+            margin: auto;
             display: inline-block;
             float: left;
             overflow-x: auto;

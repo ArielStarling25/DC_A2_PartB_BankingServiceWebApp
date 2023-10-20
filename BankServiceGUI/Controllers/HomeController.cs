@@ -947,7 +947,6 @@ namespace BankServiceGUI.Controllers
                             ViewBag.ProfileEmail = decodedEmail;
                             ViewBag.ProfileType = adminProf.type;
                             ViewBag.SortByAcc = false;
-                            ViewBag.SortByAccNum = 0;
                             LogClass.LogItem(decodedEmail, "Info", "Retrieved Transactions data");
                         }
                         else
@@ -983,47 +982,84 @@ namespace BankServiceGUI.Controllers
                 transactions = JsonConvert.DeserializeObject<List<Transaction>>(response.Content);
                 if (transactions != null)
                 {
-                    transactions.Sort();
+                    List<Transaction> sortedList = new List<Transaction>();
                     if (sorttype.Equals("id-ascending"))
                     {
-                        
+                        sortedList = sortTranList(transactions, "ascend", "id");
+                        ViewBag.SortByAcc = false;
+                        ViewBag.TransactionList = sortedList;
                     }
-                    else if (sorttype.Equals("id-descending"))
+                    else if (sorttype.Equals("id-decending"))
                     {
-                        
+                        sortedList = sortTranList(transactions, "decend", "id");
+                        ViewBag.SortByAcc = false;
+                        ViewBag.TransactionList = sortedList;
                     }
                     else if (sorttype.Equals("fromacc-ascending"))
                     {
-
+                        sortedList = sortTranList(transactions, "ascend", "fromAcc");
+                        ViewBag.SortByAcc = false;
+                        ViewBag.TransactionList = sortedList;
                     }
                     else if (sorttype.Equals("fromacc-decending"))
                     {
-
+                        sortedList = sortTranList(transactions, "decend", "fromAcc");
+                        ViewBag.SortByAcc = false;
+                        ViewBag.TransactionList = sortedList;
                     }
                     else if (sorttype.Equals("acc-byacc"))
                     {
-
+                        if (sortNum.Equals("empty"))
+                        {
+                            ViewBag.SortByAcc = true;
+                            ViewBag.TransactionList = transactions;
+                            LogClass.LogItem(adminemail, "Info", "Transaction Sorting: " + sorttype + " - " + sortNum);
+                        }
+                        else
+                        {
+                            ViewBag.SortByAcc = true;
+                            if(Int32.TryParse(sortNum, out int findByAcc))
+                            {
+                                sortedList = sortTranList(findByAcc);
+                                ViewBag.TransactionList = sortedList;
+                                LogClass.LogItem(adminemail, "Info", "Transaction Sorting: " + sorttype + " - " + sortNum);
+                            }
+                        }
                     }
                     else if (sorttype.Equals("toacc-ascending"))
                     {
-
+                        sortedList = sortTranList(transactions, "ascend", "toAcc");
+                        ViewBag.SortByAcc = false;
+                        ViewBag.TransactionList = sortedList;
                     }
                     else if (sorttype.Equals("toacc-decending"))
                     {
-
+                        sortedList = sortTranList(transactions, "decend", "toAcc");
+                        ViewBag.SortByAcc = false;
+                        ViewBag.TransactionList = sortedList;
                     }
                     else if (sorttype.Equals("amount-ascending"))
                     {
-
+                        sortedList = sortTranList(transactions, "ascend", "amount");
+                        ViewBag.SortByAcc = false;
+                        ViewBag.TransactionList = sortedList;
                     }
                     else if (sorttype.Equals("amount-decending"))
                     {
-
+                        sortedList = sortTranList(transactions, "decend", "amount");
+                        ViewBag.SortByAcc = false;
+                        ViewBag.TransactionList = sortedList;
                     }
                     else
                     {
                         LogClass.LogItem(adminemail, "Warning", "Invalid sort query");
+                        ViewBag.SortByAcc = false;
+                        ViewBag.TransactionList = sortedList;
                     }
+                    LogClass.LogItem(adminemail, "Info", "Transaction Sorting: " + sorttype);
+
+                    ViewBag.ProfileEmail = adminemail;
+                    ViewBag.ProfileType = "admin";
                 }
             }
             else
@@ -1034,46 +1070,119 @@ namespace BankServiceGUI.Controllers
             return View();
         }
 
-        private List<Transaction> sortTranList(string type, string byWhat)
+        private List<Transaction> sortTranList(List<Transaction> list, string type, string byWhat)
         {
+            List<Transaction> sortedList = new List<Transaction>();
             if (byWhat.Equals("id"))
             {
                 if (type.Equals("ascend"))
                 {
-
+                    sortedList = sortTrans(list, "id");
                 }
                 else if (type.Equals("decend"))
                 {
-
+                    sortedList = sortTrans(list, "id");
+                    sortedList.Reverse();
                 }
             }
-            else if (byWhat.Equals("fromAccount"))
+            else if (byWhat.Equals("fromAcc"))
             {
                 if (type.Equals("ascend"))
                 {
-
+                    sortedList = sortTrans(list, "fromAcc");
                 }
                 else if (type.Equals("decend"))
                 {
-
+                    sortedList = sortTrans(list, "fromAcc");
+                    sortedList.Reverse();
                 }
             }
             else if (byWhat.Equals("toAcc"))
             {
                 if (type.Equals("ascend"))
                 {
-
+                    sortedList = sortTrans(list, "toAcc");
                 }
                 else if (type.Equals("decend"))
                 {
-
+                    sortedList = sortTrans(list, "toAcc");
+                    sortedList.Reverse();
                 }
             }
+            else if (byWhat.Equals("amount"))
+            {
+                if (type.Equals("ascend"))
+                {
+                    sortedList = sortTrans(list, "amount");
+                }
+                else if (type.Equals("decend"))
+                {
+                    sortedList = sortTrans(list, "amount");
+                    sortedList.Reverse();
+                }
+            }
+            return sortedList;
         }
 
-        private List<Transaction> sortTranList(string byAcc)
+        private List<Transaction> sortTranList(int byAcc)
         {
+            List<Transaction> transactions = null;
+            RestClient client = new RestClient(httpURL);
+            RestRequest req = new RestRequest("/api/btransaction/" + byAcc, Method.Get);
+            RestResponse response = client.Get(req);
+            if (response.IsSuccessStatusCode)
+            {
+                transactions = JsonConvert.DeserializeObject<List<Transaction>>(response.Content);
+                if(transactions != null)
+                {
+                    return transactions;
+                }
+            }
+            return null;
+        }
 
+        private List<Transaction> sortTrans(List<Transaction> list, string field)
+        {
+            List<Transaction> clonedList = new List<Transaction>();
+
+            for (int i = 0; i < list.Count; i++)
+            {
+                Transaction item = list[i];
+                int currentIndex = i;
+
+                if (field.Equals("id"))
+                {
+                    while (currentIndex > 0 && clonedList[currentIndex - 1].Id > item.Id)
+                    {
+                        currentIndex--;
+                    }
+                }
+                else if (field.Equals("fromAcc"))
+                {
+                    while (currentIndex > 0 && clonedList[currentIndex - 1].accountNumber > item.accountNumber)
+                    {
+                        currentIndex--;
+                    }
+                }
+                else if (field.Equals("toAcc"))
+                {
+                    while (currentIndex > 0 && clonedList[currentIndex - 1].toAccountNumber > item.toAccountNumber)
+                    {
+                        currentIndex--;
+                    }
+                }
+                else if (field.Equals("amount"))
+                {
+                    while (currentIndex > 0 && clonedList[currentIndex - 1].amount > item.amount)
+                    {
+                        currentIndex--;
+                    }
+                }
+
+                clonedList.Insert(currentIndex, item);
+            }
+
+            return clonedList;
         }
 
         public async Task<IActionResult> Logs(string email)
